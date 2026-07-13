@@ -1,4 +1,4 @@
-package configuration.provider;
+package configuration.loader;
 
 import configuration.AgentConfig;
 import configuration.source.ConfigurationSource;

@@ -1,10 +1,8 @@
 package configuration.validation;
 
 import configuration.AgentConfig;
-import exceptions.ConfigurationLoadError;
-import exceptions.ConfigurationValidationError;
-
-import java.time.Duration;
+import exceptions.ConfigurationLoadException;
+import exceptions.ConfigurationValidationException;
 
 public class ConfigurationValidator {
 
@@ -13,13 +11,13 @@ public class ConfigurationValidator {
 
         if ( config.getServerUrl() == null){
 
-            throw new ConfigurationValidationError("Server Url Is NULL");
+            throw new ConfigurationValidationException("Server Url Is NULL");
 
         }
 
 
         if ( config.getHeartbeatDuration() == null || config.getHeartbeatDuration().isNegative() || config.getHeartbeatDuration().isZero()){
-            throw new ConfigurationLoadError("Heartbeat Duration is not specified");
+            throw new ConfigurationLoadException("Heartbeat Duration is not specified");
         }
 
 

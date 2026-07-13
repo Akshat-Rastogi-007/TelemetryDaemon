@@ -2,7 +2,7 @@ package configuration.source.properties;
 
 import configuration.AgentConfig;
 import configuration.source.ConfigurationSource;
-import exceptions.ConfigurationLoadError;
+import exceptions.ConfigurationLoadException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class PropertiesConfigurationSource implements ConfigurationSource {
             );
 
         } catch (IOException e) {
-            throw new ConfigurationLoadError( "Error loading the configuration due to : "+ e.getMessage());
+            throw new ConfigurationLoadException( "Error loading the configuration due to : "+ e.getMessage());
         }
 
     }
