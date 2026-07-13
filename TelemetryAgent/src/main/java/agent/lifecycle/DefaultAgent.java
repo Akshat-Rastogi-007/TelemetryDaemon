@@ -4,10 +4,14 @@ import agent.enums.AgentState;
 import configuration.AgentConfig;
 import exceptions.AgentLifecycleException;
 
+import java.util.concurrent.CountDownLatch;
+
 public class DefaultAgent implements Agent{
 
     private AgentState state =  AgentState.NEW;
     private final AgentConfig agentConfig;
+    private final CountDownLatch terminationLatch = new CountDownLatch(1);
+
 
     public DefaultAgent(AgentConfig agentConfig) {
         this.agentConfig = agentConfig;
@@ -30,6 +34,7 @@ public class DefaultAgent implements Agent{
     @Override
     public void stop() {
 
+
         if (state == AgentState.STOPPED){
             return;
         }
@@ -40,10 +45,13 @@ public class DefaultAgent implements Agent{
 
         state = AgentState.STOPPED;
 
+        terminationLatch.countDown();
     }
 
     @Override
     public void awaitTermination() throws InterruptedException {
+
+        terminationLatch.await();
 
     }
 
