@@ -25,6 +25,7 @@ public class AgentConfig {
         this.serverUrl = serverUrl;
     }
 
+
     public Duration getHeartbeatDuration() {
         return heartbeatDuration;
     }
@@ -34,5 +35,14 @@ public class AgentConfig {
     }
 
 
+
+    @Override
+    public String toString() {
+        return "AgentConfig{" +
+                "agentId='" + agentId + '\'' +
+                ", serverUrl='" + serverUrl + '\'' +
+                ", heartbeatDuration=" + heartbeatDuration +
+                '}';
+    }
 
 }

@@ -38,6 +38,9 @@ public class StartCommand implements Command{
 
         AgentConfig config = loader.loadConfiguration();
 
+
+        System.out.println(config);
+
         AgentLauncher launcher = new AgentLauncher();
 
         Agent agent = launcher.launch(config);

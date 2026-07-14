@@ -2,15 +2,19 @@ package agent.launcher;
 
 import agent.lifecycle.Agent;
 import agent.lifecycle.DefaultAgent;
+import agent.schedular.DefaultSchedular;
+import agent.schedular.Scheduler;
 import configuration.AgentConfig;
 
 public class AgentLauncher {
 
     public Agent launch(AgentConfig config){
 
-        Agent agent = new DefaultAgent(config);
+        System.out.println("*****LAUNCHING AGENT*****");
+        Scheduler scheduler = new DefaultSchedular();
+        Agent agent = new DefaultAgent(config,scheduler);
 
-        registerShutDownHook(agent);
+        registerShutdownHook(agent);
 
         agent.start();
 
@@ -18,8 +22,17 @@ public class AgentLauncher {
 
     }
 
-    private static void registerShutDownHook(Agent agent) {
-        Runtime.getRuntime().addShutdownHook(new Thread(agent::stop));
+    private static void registerShutdownHook(Agent agent) {
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+
+            System.err.println("===== SHUTDOWN HOOK =====");
+
+            agent.stop();
+
+            System.err.println("===== STOP FINISHED =====");
+
+        }));
     }
 
 

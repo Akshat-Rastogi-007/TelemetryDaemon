@@ -4,6 +4,7 @@ cli/command/CommandLineFactory.class
 cli/command/Command.class
 configuration/source/properties/PropertiesConfigurationSource.class
 configuration/source/defaultprovider/DefaultConfigurationSource.class
+agent/schedular/Scheduler.class
 agent/enums/AgentState.class
 agent/lifecycle/DefaultAgent.class
 agent/launcher/AgentLauncher.class
@@ -12,6 +13,7 @@ exceptions/ConfigurationValidationException.class
 configuration/AgentConfig.class
 cli/CommandParser.class
 agent/lifecycle/Agent.class
+agent/schedular/DefaultSchedular.class
 exceptions/ConfigurationLoadException.class
 configuration/source/argunments/ArgumentsConfigurationSource.class
 configuration/validation/ConfigurationValidator.class
