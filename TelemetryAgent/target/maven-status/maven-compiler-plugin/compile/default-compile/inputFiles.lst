@@ -3,6 +3,8 @@
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/launcher/AgentLauncher.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/lifecycle/Agent.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/lifecycle/DefaultAgent.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/DefaultSchedular.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/Scheduler.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/cli/CommandParser.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/cli/command/Command.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/cli/command/CommandLineFactory.java
