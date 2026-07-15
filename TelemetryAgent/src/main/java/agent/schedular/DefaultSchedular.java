@@ -1,5 +1,7 @@
 package agent.schedular;
 
+import agent.collector.Collector;
+
 import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,11 +39,15 @@ public class DefaultSchedular implements Scheduler {
     }
 
     @Override
-    public void schedule(Runnable task, Duration interval) {
+    public void schedule(Collector collector, Duration interval) {
 
         // task which we need to schedule
 
-        executor.scheduleAtFixedRate(task,0,interval.getSeconds(), TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(
+                collector::collect,
+                0,
+                interval.getSeconds(),
+                TimeUnit.SECONDS);
 
     }
 }

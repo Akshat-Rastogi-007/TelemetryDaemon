@@ -1,5 +1,6 @@
 package agent.lifecycle;
 
+import agent.collector.CollectorEngine;
 import agent.enums.AgentState;
 import agent.schedular.Scheduler;
 import configuration.AgentConfig;
@@ -12,12 +13,12 @@ public class DefaultAgent implements Agent{
     private AgentState state =  AgentState.NEW;
     private final AgentConfig agentConfig;
     private final CountDownLatch terminationLatch = new CountDownLatch(1);
-    private final Scheduler schedular;
+    private final CollectorEngine collectorEngine;
 
 
-    public DefaultAgent(AgentConfig agentConfig, Scheduler schedular) {
+    public DefaultAgent(AgentConfig agentConfig, CollectorEngine collectorEngine) {
         this.agentConfig = agentConfig;
-        this.schedular = schedular;
+        this.collectorEngine = collectorEngine;
     }
 
     @Override
@@ -30,12 +31,10 @@ public class DefaultAgent implements Agent{
         System.out.println("*****Starting AGENT*****");
         state = AgentState.STARTING;
 
-        // some process
-        schedular.start();
+        collectorEngine.start();
 
-        System.out.println("*****SCHEDULING TASK*****");
+        collectorEngine.scheduleCollector(agentConfig);
 
-        schedular.schedule(() -> System.out.println("Hi"), agentConfig.getHeartbeatDuration());
 
         state = AgentState.RUNNING;
     }
@@ -51,9 +50,8 @@ public class DefaultAgent implements Agent{
 
         state = AgentState.STOPPING;
 
-        // some process
+        collectorEngine.stop();
 
-        schedular.stop();
         state = AgentState.STOPPED;
 
         terminationLatch.countDown();

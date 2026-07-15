@@ -1,5 +1,7 @@
 package agent.schedular;
 
+import agent.collector.Collector;
+
 import java.time.Duration;
 
 public interface Scheduler {
@@ -9,6 +11,6 @@ public interface Scheduler {
 
     void stop();
 
-    void schedule(Runnable task, Duration interval);
+    void schedule(Collector collector, Duration interval);
 
 }
