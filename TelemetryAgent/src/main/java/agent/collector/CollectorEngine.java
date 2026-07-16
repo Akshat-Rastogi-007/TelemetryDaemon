@@ -7,7 +7,6 @@ import configuration.AgentConfig;
 public class CollectorEngine {
 
 
-
     private final CollectorScheduler collectorScheduler;
 
     public CollectorEngine(CollectorScheduler collectorScheduler) {

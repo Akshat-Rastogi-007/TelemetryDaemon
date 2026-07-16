@@ -43,8 +43,19 @@ public class DefaultSchedular implements Scheduler {
 
         // task which we need to schedule
 
+
+        System.out.println("*****Inside Schedular*****");
+
+
         executor.scheduleAtFixedRate(
-                collector::collect,
+                () -> {
+                    collector.collect()
+                            .forEach((metric) ->
+                                    System.out.println(metric)
+                                    // need to be converted into reports and then connect it to the HttpClient or where ever you want
+                            );
+                }
+                ,
                 0,
                 interval.getSeconds(),
                 TimeUnit.SECONDS);

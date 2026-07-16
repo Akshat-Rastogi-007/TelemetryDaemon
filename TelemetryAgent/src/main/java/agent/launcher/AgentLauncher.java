@@ -7,6 +7,8 @@ import agent.collector.manager.CollectorManager;
 import agent.collector.scheduler.CollectorScheduler;
 import agent.lifecycle.Agent;
 import agent.lifecycle.DefaultAgent;
+import agent.platform.Platform;
+import agent.platform.PlatformFactory;
 import agent.schedular.DefaultSchedular;
 import agent.schedular.Scheduler;
 import configuration.AgentConfig;
@@ -26,15 +28,17 @@ public class AgentLauncher {
 
         CollectorManager manager = new CollectorManager(collectorMap);
 
-        manager.registerCollector(new CpuCollector());
+        Platform platform = new PlatformFactory().create();
+
+        System.out.printf("*****Platform Received -> %s ***** \n ", platform.getId());
+
+        manager.registerCollector(new CpuCollector(platform.cpu()));
 
         CollectorScheduler collectorScheduler = new CollectorScheduler(manager, scheduler);
 
         CollectorEngine collectorEngine = new CollectorEngine(collectorScheduler);
 
-
         Agent agent = new DefaultAgent(config,collectorEngine);
-
 
         registerShutdownHook(agent);
 

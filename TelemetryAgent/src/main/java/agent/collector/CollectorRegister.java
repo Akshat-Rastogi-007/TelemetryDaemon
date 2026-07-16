@@ -4,7 +4,7 @@ public class CollectorRegister {
 
     private final Collector collector;
 
-    private boolean enabled;
+    private boolean enabled = Boolean.TRUE;
 
     public CollectorRegister(Collector collector, Boolean enabled) {
         this.collector = collector;

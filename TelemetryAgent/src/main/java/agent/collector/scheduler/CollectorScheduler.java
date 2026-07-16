@@ -26,12 +26,12 @@ public class CollectorScheduler {
 
     public void scheduleCollectors(AgentConfig agentConfig){
 
+        System.out.println("Scheduling Scheduler");
         for (CollectorRegister register : collectorManager.getCollectors()){
+
 
             if (register.isEnable())
                 scheduler.schedule(register.getCollector(), agentConfig.getHeartbeatDuration());
-
-
         }
 
     }

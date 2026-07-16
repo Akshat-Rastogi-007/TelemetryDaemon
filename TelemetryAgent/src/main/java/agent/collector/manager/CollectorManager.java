@@ -21,7 +21,7 @@ public class CollectorManager {
     public void registerCollector(Collector collector){
 
         String name = collector.getId();
-        CollectorRegister register = new CollectorRegister(collector);
+        CollectorRegister register = new CollectorRegister(collector,Boolean.TRUE);
 
         collectorMap.put(name,register);
 
