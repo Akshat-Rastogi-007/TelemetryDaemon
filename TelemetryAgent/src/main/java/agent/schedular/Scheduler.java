@@ -1,8 +1,10 @@
 package agent.schedular;
 
 import agent.collector.Collector;
+import agent.reporter.Reporter;
 
 import java.time.Duration;
+import java.util.List;
 
 public interface Scheduler {
 
@@ -11,6 +13,6 @@ public interface Scheduler {
 
     void stop();
 
-    void schedule(Collector collector, Duration interval);
+    void schedule(Collector collector, List<Reporter> reporters, Duration interval);
 
 }

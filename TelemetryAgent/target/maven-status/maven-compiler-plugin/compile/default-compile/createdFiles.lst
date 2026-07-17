@@ -11,6 +11,7 @@ agent/platform/disk/impl/FileStoreDIskProvider.class
 exceptions/ConfigurationLoadException.class
 configuration/validation/ConfigurationValidator.class
 agent/platform/cpu/impl/MxBeanCpuProvider.class
+agent/reporter/impl/ConsoleReporter.class
 exceptions/AgentLifecycleException.class
 cli/command/CommandLineFactory.class
 agent/schedular/Scheduler.class
@@ -22,15 +23,17 @@ cli/command/StartCommand.class
 configuration/source/ConfigurationSource.class
 TelemetryAgent.class
 agent/collector/Collector.class
+agent/reporter/Reporter.class
 agent/collector/memory/MemoryCollector.class
 agent/platform/cpu/CpuSnapshot.class
 agent/platform/PlatformFactory.class
 agent/collector/CollectorRegister.class
 agent/telemetry/MetricUnit.class
 agent/platform/network/NetworkProvider.class
+agent/telemetry/TelemetryBatch.class
 cli/CommandParser.class
+agent/reporter/impl/FileReporter.class
 agent/schedular/DefaultSchedular.class
-agent/schedular/LogSchedular.class
 agent/platform/disk/DiskProvider.class
 agent/platform/cpu/CpuProvider.class
 agent/collector/scheduler/CollectorScheduler.class

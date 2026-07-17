@@ -1,6 +1,6 @@
 .gitignore
 .idea
 out
-logs
+TelemetryAgent/logs/telemetry.log
 prompt.txt
 TelemetryDaemon_Roadmap.md

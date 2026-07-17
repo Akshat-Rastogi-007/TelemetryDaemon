@@ -2,8 +2,11 @@ package agent.collector.scheduler;
 
 import agent.collector.CollectorRegister;
 import agent.collector.manager.CollectorManager;
+import agent.reporter.Reporter;
 import agent.schedular.Scheduler;
 import configuration.AgentConfig;
+
+import java.util.List;
 
 public class CollectorScheduler {
 
@@ -24,7 +27,7 @@ public class CollectorScheduler {
     }
 
 
-    public void scheduleCollectors(AgentConfig agentConfig){
+    public void scheduleCollectors(AgentConfig agentConfig, List<Reporter> reporters){
 
         System.out.println("Scheduling Scheduler");
         for (CollectorRegister register : collectorManager.getCollectors()){
@@ -32,7 +35,7 @@ public class CollectorScheduler {
 
             if (register.isEnable()) {
                 System.out.println(register.getCollector().getId());
-                scheduler.schedule(register.getCollector(), agentConfig.getHeartbeatDuration());
+                scheduler.schedule(register.getCollector(), reporters, agentConfig.getHeartbeatDuration());
             }
         }
 

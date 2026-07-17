@@ -12,10 +12,14 @@ import agent.lifecycle.Agent;
 import agent.lifecycle.DefaultAgent;
 import agent.platform.Platform;
 import agent.platform.PlatformFactory;
-import agent.schedular.LogSchedular;
+import agent.reporter.Reporter;
+import agent.reporter.impl.ConsoleReporter;
+import agent.reporter.impl.FileReporter;
+import agent.schedular.DefaultSchedular;
 import agent.schedular.Scheduler;
 import configuration.AgentConfig;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +30,8 @@ public class AgentLauncher {
 
         System.out.println("*****INSIDE AGENT LAUNCHER*****");
 
-        System.out.println("*****IMPLEMENTED LOG SCHEDULAR*****");
-        Scheduler scheduler = new LogSchedular();
+        System.out.println("*****IMPLEMENTED Default SCHEDULAR*****");
+        Scheduler scheduler = new DefaultSchedular();
 
         Map<String, CollectorRegister> collectorMap = new HashMap<>();
 
@@ -47,7 +51,12 @@ public class AgentLauncher {
 
         CollectorScheduler collectorScheduler = new CollectorScheduler(manager, scheduler);
 
-        CollectorEngine collectorEngine = new CollectorEngine(collectorScheduler);
+        List<Reporter> reporters = List.of(
+                new ConsoleReporter(),
+                new FileReporter(Paths.get("logs"))
+        );
+
+        CollectorEngine collectorEngine = new CollectorEngine(collectorScheduler,reporters);
 
         Agent agent = new DefaultAgent(config,collectorEngine);
 
