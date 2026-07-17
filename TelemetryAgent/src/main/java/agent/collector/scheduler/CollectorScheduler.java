@@ -30,8 +30,10 @@ public class CollectorScheduler {
         for (CollectorRegister register : collectorManager.getCollectors()){
 
 
-            if (register.isEnable())
+            if (register.isEnable()) {
+                System.out.println(register.getCollector().getId());
                 scheduler.schedule(register.getCollector(), agentConfig.getHeartbeatDuration());
+            }
         }
 
     }

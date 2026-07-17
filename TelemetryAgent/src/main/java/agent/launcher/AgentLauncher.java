@@ -1,28 +1,33 @@
 package agent.launcher;
 
+import agent.collector.Collector;
 import agent.collector.CollectorEngine;
 import agent.collector.CollectorRegister;
-import agent.collector.CpuCollector;
+import agent.collector.cpu.CpuCollector;
+import agent.collector.disk.DiskCollector;
 import agent.collector.manager.CollectorManager;
+import agent.collector.memory.MemoryCollector;
 import agent.collector.scheduler.CollectorScheduler;
 import agent.lifecycle.Agent;
 import agent.lifecycle.DefaultAgent;
 import agent.platform.Platform;
 import agent.platform.PlatformFactory;
-import agent.schedular.DefaultSchedular;
+import agent.schedular.LogSchedular;
 import agent.schedular.Scheduler;
 import configuration.AgentConfig;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AgentLauncher {
 
     public Agent launch(AgentConfig config){
 
-        System.out.println("*****LAUNCHING AGENT*****");
-        Scheduler scheduler = new DefaultSchedular();
+        System.out.println("*****INSIDE AGENT LAUNCHER*****");
 
+        System.out.println("*****IMPLEMENTED LOG SCHEDULAR*****");
+        Scheduler scheduler = new LogSchedular();
 
         Map<String, CollectorRegister> collectorMap = new HashMap<>();
 
@@ -32,7 +37,13 @@ public class AgentLauncher {
 
         System.out.printf("*****Platform Received -> %s ***** \n ", platform.getId());
 
-        manager.registerCollector(new CpuCollector(platform.cpu()));
+        List<Collector> collectors = List.of(
+                new CpuCollector(platform.cpu()),
+                new DiskCollector(platform.disk()),
+                new MemoryCollector(platform.memory())
+        );
+
+        manager.registerCollector(collectors);
 
         CollectorScheduler collectorScheduler = new CollectorScheduler(manager, scheduler);
 

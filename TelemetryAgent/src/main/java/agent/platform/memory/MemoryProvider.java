@@ -1,4 +1,7 @@
 package agent.platform.memory;
 
-public class MemoryProvider {
+public interface MemoryProvider {
+
+    MemorySnapshot snapshot();
+
 }

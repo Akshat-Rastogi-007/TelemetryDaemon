@@ -7,6 +7,17 @@ import agent.platform.memory.MemoryProvider;
 import agent.platform.network.NetworkProvider;
 
 public class WindowsPlatform implements Platform {
+
+    private final CpuProvider cpuProvider;
+    private final MemoryProvider memoryProvider;
+    private final DiskProvider diskProvider;
+
+    public WindowsPlatform(CpuProvider cpuProvider, MemoryProvider memoryProvider, DiskProvider diskProvider) {
+        this.cpuProvider = cpuProvider;
+        this.memoryProvider = memoryProvider;
+        this.diskProvider = diskProvider;
+    }
+
     @Override
     public String getId() {
         return "windows";
@@ -14,17 +25,17 @@ public class WindowsPlatform implements Platform {
 
     @Override
     public CpuProvider cpu() {
-        return null;
+        return cpuProvider;
     }
 
     @Override
     public MemoryProvider memory() {
-        return null;
+        return memoryProvider;
     }
 
     @Override
     public DiskProvider disk() {
-        return null;
+        return diskProvider;
     }
 
     @Override

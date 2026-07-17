@@ -7,6 +7,18 @@ import agent.platform.memory.MemoryProvider;
 import agent.platform.network.NetworkProvider;
 
 public class MacPlatform implements Platform {
+
+    private final CpuProvider cpuProvider;
+    private final MemoryProvider memoryProvider;
+    private final DiskProvider diskProvider;
+
+    public MacPlatform(CpuProvider cpuProvider, MemoryProvider memoryProvider, DiskProvider diskProvider) {
+        this.cpuProvider = cpuProvider;
+        this.memoryProvider = memoryProvider;
+        this.diskProvider = diskProvider;
+    }
+
+
     @Override
     public String getId() {
         return "mac";
@@ -14,17 +26,17 @@ public class MacPlatform implements Platform {
 
     @Override
     public CpuProvider cpu() {
-        return null;
+        return cpuProvider;
     }
 
     @Override
     public MemoryProvider memory() {
-        return null;
+        return memoryProvider;
     }
 
     @Override
     public DiskProvider disk() {
-        return null;
+        return diskProvider;
     }
 
     @Override

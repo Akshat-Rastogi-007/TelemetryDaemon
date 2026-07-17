@@ -3,10 +3,7 @@ package agent.collector.manager;
 import agent.collector.Collector;
 import agent.collector.CollectorRegister;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class CollectorManager {
 
@@ -24,6 +21,14 @@ public class CollectorManager {
         CollectorRegister register = new CollectorRegister(collector,Boolean.TRUE);
 
         collectorMap.put(name,register);
+
+    }
+
+    public void registerCollector(List<Collector> collectors){
+
+        for ( Collector collector : collectors){
+            registerCollector(collector);
+        }
 
     }
 

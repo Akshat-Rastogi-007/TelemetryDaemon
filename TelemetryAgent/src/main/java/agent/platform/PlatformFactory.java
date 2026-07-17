@@ -1,8 +1,10 @@
 package agent.platform;
 
 import agent.platform.cpu.impl.MxBeanCpuProvider;
+import agent.platform.disk.impl.FileStoreDIskProvider;
 import agent.platform.linux.LinuxPlatform;
 import agent.platform.mac.MacPlatform;
+import agent.platform.memory.impl.MxBeanMemoryProvider;
 import agent.platform.windows.WindowsPlatform;
 
 import java.lang.management.ManagementFactory;
@@ -22,16 +24,34 @@ public class PlatformFactory {
                     (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
 
             MxBeanCpuProvider mxBeanCpuProvider = new MxBeanCpuProvider(osBean);
+            MxBeanMemoryProvider mxBeanMemoryProvider = new MxBeanMemoryProvider(osBean);
+            FileStoreDIskProvider diskProvider = new FileStoreDIskProvider();
 
-            return new LinuxPlatform(mxBeanCpuProvider);
+            return new LinuxPlatform(mxBeanCpuProvider, mxBeanMemoryProvider, diskProvider);
         }
 
         if (os.contains("windows")) {
-            return new WindowsPlatform();
+
+            OperatingSystemMXBean osBean =
+                    (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+
+            MxBeanCpuProvider mxBeanCpuProvider = new MxBeanCpuProvider(osBean);
+            MxBeanMemoryProvider mxBeanMemoryProvider = new MxBeanMemoryProvider(osBean);
+            FileStoreDIskProvider diskProvider = new FileStoreDIskProvider();
+
+            return new WindowsPlatform(mxBeanCpuProvider,mxBeanMemoryProvider,diskProvider);
         }
 
         if (os.contains("mac")) {
-            return new MacPlatform();
+
+            OperatingSystemMXBean osBean =
+                    (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+
+            MxBeanCpuProvider mxBeanCpuProvider = new MxBeanCpuProvider(osBean);
+            MxBeanMemoryProvider mxBeanMemoryProvider = new MxBeanMemoryProvider(osBean);
+            FileStoreDIskProvider diskProvider = new FileStoreDIskProvider();
+
+            return new MacPlatform(mxBeanCpuProvider,mxBeanMemoryProvider,diskProvider);
         }
 
         throw new UnsupportedOperationException(

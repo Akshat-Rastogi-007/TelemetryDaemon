@@ -10,9 +10,13 @@ import agent.platform.network.NetworkProvider;
 public class LinuxPlatform implements Platform {
 
     private final CpuProvider cpuProvider;
+    private final MemoryProvider memoryProvider;
+    private final DiskProvider diskProvider;
 
-    public LinuxPlatform(CpuProvider cpuProvider) {
+    public LinuxPlatform(CpuProvider cpuProvider, MemoryProvider memoryProvider, DiskProvider diskProvider) {
         this.cpuProvider = cpuProvider;
+        this.memoryProvider = memoryProvider;
+        this.diskProvider = diskProvider;
     }
 
     @Override
@@ -27,12 +31,12 @@ public class LinuxPlatform implements Platform {
 
     @Override
     public MemoryProvider memory() {
-        return null;
+        return memoryProvider;
     }
 
     @Override
     public DiskProvider disk() {
-        return null;
+        return diskProvider;
     }
 
     @Override

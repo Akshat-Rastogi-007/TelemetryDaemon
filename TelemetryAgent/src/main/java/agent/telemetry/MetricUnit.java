@@ -2,6 +2,8 @@ package agent.telemetry;
 
 public enum MetricUnit {
 
+    TEST,
+
     PERCENT,
 
     BYTE,
