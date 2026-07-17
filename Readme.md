@@ -2,132 +2,263 @@
 
 TelemetryDaemon is a lightweight, extensible system monitoring agent built in Java.
 
-The agent runs on client machines, collects telemetry such as CPU, memory, disk, and network usage, and periodically sends it to a centralized backend for monitoring and analysis.
+The agent runs on client machines, collects system telemetry such as CPU, memory, disk, and (future) network metrics, and is designed to periodically send them to a centralized backend for monitoring and analysis.
 
-This project is being built from scratch with a strong focus on clean architecture, object-oriented design, and extensibility. The long-term goal is to rewrite the agent in Rust while keeping the backend in Spring Boot.
+This project is being built from scratch with a strong focus on clean architecture, SOLID principles, object-oriented design, and production-quality engineering practices. The long-term goal is to rewrite the agent in Rust while keeping the backend in Spring Boot.
 
 ---
 
-## 🚀 Vision
+# 🚀 Vision
 
 TelemetryDaemon aims to become a production-ready monitoring agent capable of:
 
 - System resource monitoring
 - Secure agent registration
-- Periodic heartbeat mechanism
-- Telemetry collection
+- Periodic heartbeat scheduling
+- Modular telemetry collection
 - Remote command execution
 - Offline telemetry buffering
 - Automatic retry and recovery
 - Plugin-based collector architecture
+- Cross-platform support (Linux, Windows, macOS)
 
 ---
 
-## 🏗️ Current Progress
+# 🏗️ Current Progress
 
-### ✅ Implemented
+## ✅ Implemented
+
+### CLI & Configuration
 
 - CLI command parser
+- Command registry
 - Command abstraction
 - Configuration loading pipeline
 - Configuration validation
+- Default configuration support
 - Properties file support
 - Command-line argument overrides
 
-### 🚧 In Progress
+### Agent Lifecycle
 
-- Agent lifecycle
+- Agent abstraction
+- Agent lifecycle management
+- Agent launcher
+- Graceful shutdown hook
+- Scheduler integration
+
+### Telemetry Collection Framework
+
+- Collector abstraction
+- Metric model
+- Snapshot-based platform architecture
+
+### Platform Providers
+
+- CPU Provider
+- Memory Provider
+- Disk Provider
+
+### Collectors
+
+- CPU Collector
+- Memory Collector
+- Disk Collector
+
+### Scheduler
+
+- Scheduled telemetry collection
+- File-based telemetry logging
+- Structured telemetry log output
+
+---
+
+## 🚧 In Progress
+
+- Platform abstraction improvements
+- Reporter pipeline
+- Console reporter
+- File reporter
+
+---
+
+## 📅 Planned
+
+### Platform
+
+- Advanced Network telemetry
+- Linux-specific metrics
+- Windows platform implementation
+- macOS platform implementation
+
+### Agent
+
 - Registration service
-- Heartbeat scheduler
-
-### 📅 Planned
-
+- Heartbeat service
 - HTTP client
-- CPU collector
-- Memory collector
-- Disk collector
-- Network collector
-- Local telemetry queue
-- Offline mode
+
+### Telemetry
+
+- Offline telemetry queue
+- Retry mechanism
+- Local persistence
+- HTTP reporter
+
+### Future
+
 - Remote command execution
+- Plugin architecture
 - Docker deployment
 - Rust implementation of the agent
 
 ---
 
-## 🏛️ Architecture
+# 🏛️ Architecture
 
 ```
-CLI
- │
- ▼
-Command Parser
- │
- ▼
-Commands
- │
- ▼
-Configuration Loader
- │
- ▼
-Agent Service
- │
- ├── Registration
- ├── Scheduler
- ├── Collectors
- └── Heartbeat
+                  Operating System
+                          │
+                          ▼
+                    Platform Provider
+                          │
+                          ▼
+                      Snapshot Model
+                          │
+                          ▼
+                       Collector
+                          │
+                          ▼
+                    Collection<Metric>
+                          │
+                          ▼
+                      Reporter (Planned)
+                          │
+                          ▼
+                         Backend
 ```
 
 ---
 
-## 🛠️ Tech Stack
+# 📂 Current Architecture
 
-### Current
+```
+agent
+├── command
+├── config
+├── lifecycle
+├── collector
+│   ├── cpu
+│   ├── memory
+│   └── disk
+├── platform
+│   ├── cpu
+│   ├── memory
+│   └── disk
+├── scheduler
+├── telemetry
+└── launcher
+```
 
-- Java
+---
+
+# 🛠️ Tech Stack
+
+## Current
+
+- Java 21
 - Java CLI
-- Docker (development)
+- ScheduledExecutorService
+- OperatingSystemMXBean
+- Java NIO FileStore
+- Docker (Development)
 
-### Planned
+## Planned
 
-- Spring Boot (Backend)
+- Spring Boot Backend
 - PostgreSQL
 - Redis
 - Docker
-- Rust (Agent rewrite)
+- Rust Agent
 
 ---
 
-## 🎯 Goals
+# 🎯 Design Principles
 
-- Learn systems programming concepts
-- Design a production-style monitoring agent
-- Practice clean architecture and SOLID principles
-- Explore distributed systems and observability
-- Rewrite the Java agent in Rust
+This project emphasizes:
+
+- Clean Architecture
+- SOLID Principles
+- Separation of Concerns
+- Dependency Injection
+- Strategy Pattern
+- Registry Pattern
+- Composition over Inheritance
+- Platform-independent abstractions
 
 ---
 
-## 📌 Project Status
+# 📌 Project Status
 
 This project is under active development.
 
-The architecture and features will continue to evolve as the project grows.
+The focus is currently on building a robust and extensible telemetry collection framework before introducing networking and backend communication.
 
+---
 
-## Roadmap
+# 🗺️ Roadmap
+
+## Phase 1 — Foundation ✅
 
 - [x] Project initialization
 - [x] CLI command parser
-- [x] Configuration loading
-- [ ] Agent lifecycle
+- [x] Configuration pipeline
+- [x] Agent lifecycle
+- [x] Scheduler
+- [x] Metric model
+- [x] Collector framework
+
+---
+
+## Phase 2 — Platform Telemetry 🚧
+
+- [x] CPU Provider & Collector
+- [x] Memory Provider & Collector
+- [x] Disk Provider & Collector
+- [ ] Network Provider & Collector
+- [ ] Platform implementations
+
+---
+
+## Phase 3 — Reporting
+
+- [ ] Reporter abstraction
+- [ ] Console reporter
+- [ ] File reporter
+- [ ] HTTP reporter
+
+---
+
+## Phase 4 — Communication
+
 - [ ] Registration service
 - [ ] Heartbeat service
-- [ ] CPU collector
-- [ ] Memory collector
-- [ ] Disk collector
-- [ ] Network collector
 - [ ] HTTP client
+- [ ] Backend communication
+
+---
+
+## Phase 5 — Reliability
+
 - [ ] Offline queue
+- [ ] Retry mechanism
+- [ ] Local persistence
+- [ ] Recovery
+
+---
+
+## Phase 6 — Advanced Features
+
+- [ ] Remote command execution
+- [ ] Plugin architecture
 - [ ] Docker deployment
 - [ ] Rust implementation
