@@ -8,6 +8,15 @@ public class AgentConfig {
     private String agentId;
     private String serverUrl;
     private Duration heartbeatDuration;
+    private String transportType;
+
+    public String getTransportType() {
+        return transportType;
+    }
+
+    public void setTransportType(String transportType) {
+        this.transportType = transportType;
+    }
 
     public String getAgentId() {
         return agentId;
@@ -34,15 +43,13 @@ public class AgentConfig {
         this.heartbeatDuration = heartbeatDuration;
     }
 
-
-
     @Override
     public String toString() {
         return "AgentConfig{" +
                 "agentId='" + agentId + '\'' +
                 ", serverUrl='" + serverUrl + '\'' +
                 ", heartbeatDuration=" + heartbeatDuration +
+                ", transportType='" + transportType + '\'' +
                 '}';
     }
-
 }

@@ -4,15 +4,24 @@ import configuration.AgentConfig;
 import exceptions.ConfigurationLoadException;
 import exceptions.ConfigurationValidationException;
 
+import java.net.URI;
+
 public class ConfigurationValidator {
 
 
     public void validate(AgentConfig config){
 
-        if ( config.getServerUrl() == null){
+        String serverUrl = config.getServerUrl();
 
-            throw new ConfigurationValidationException("Server Url Is NULL");
+        if (serverUrl == null || serverUrl.isBlank()) {
+            throw new ConfigurationValidationException("Server URL must be configured.");
+        }
 
+        try {
+            URI.create(serverUrl);
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationValidationException(
+                    "Invalid server URL: " + serverUrl, e);
         }
 
 

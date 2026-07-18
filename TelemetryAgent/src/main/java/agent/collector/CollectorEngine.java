@@ -2,6 +2,7 @@ package agent.collector;
 
 import agent.collector.scheduler.CollectorScheduler;
 import agent.reporter.Reporter;
+import agent.transport.TelemetryTransport;
 import configuration.AgentConfig;
 
 import java.util.List;

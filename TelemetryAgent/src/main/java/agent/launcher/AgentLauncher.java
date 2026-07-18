@@ -15,8 +15,11 @@ import agent.platform.PlatformFactory;
 import agent.reporter.Reporter;
 import agent.reporter.impl.ConsoleReporter;
 import agent.reporter.impl.FileReporter;
+import agent.reporter.impl.HttpReporter;
 import agent.schedular.DefaultSchedular;
 import agent.schedular.Scheduler;
+import agent.transport.TelemetryTransport;
+import agent.transport.TransportFactory;
 import configuration.AgentConfig;
 
 import java.nio.file.Paths;
@@ -32,6 +35,10 @@ public class AgentLauncher {
 
         System.out.println("*****IMPLEMENTED Default SCHEDULAR*****");
         Scheduler scheduler = new DefaultSchedular();
+
+        TransportFactory transportFactory = new TransportFactory(config);
+
+        TelemetryTransport transport = transportFactory.create();
 
         Map<String, CollectorRegister> collectorMap = new HashMap<>();
 
@@ -51,9 +58,11 @@ public class AgentLauncher {
 
         CollectorScheduler collectorScheduler = new CollectorScheduler(manager, scheduler);
 
+
         List<Reporter> reporters = List.of(
                 new ConsoleReporter(),
-                new FileReporter(Paths.get("logs"))
+                new FileReporter(Paths.get("logs")),
+                new HttpReporter(transport)
         );
 
         CollectorEngine collectorEngine = new CollectorEngine(collectorScheduler,reporters);

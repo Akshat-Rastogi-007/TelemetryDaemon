@@ -30,6 +30,7 @@ public class PropertiesConfigurationSource implements ConfigurationSource {
             config.setHeartbeatDuration(
                     Duration.ofSeconds(Long.parseLong(properties.getProperty("heartbeat.interval")))
             );
+            config.setTransportType(properties.getProperty("transport.type"));
 
         } catch (IOException e) {
             throw new ConfigurationLoadException( "Error loading the configuration due to : "+ e.getMessage());
