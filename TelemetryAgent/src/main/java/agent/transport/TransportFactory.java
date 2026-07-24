@@ -26,7 +26,7 @@ public class TransportFactory {
             JacksonTelemetrySerializer jacksonTelemetrySerializer = new JacksonTelemetrySerializer();
 
 
-            return new HttpTransport(HttpClient.newHttpClient(),jacksonTelemetrySerializer, URI.create(config.getServerUrl()));
+            return new HttpTransport(HttpClient.newHttpClient(),jacksonTelemetrySerializer, URI.create(config.getServerUrl()+"/app/telemetry/submit"));
         }
 
         throw new ResourceNotFoundException("Transport Type " + transportType +" is not supported yet");

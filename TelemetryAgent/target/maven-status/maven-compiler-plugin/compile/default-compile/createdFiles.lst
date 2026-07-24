@@ -1,4 +1,5 @@
 agent/collector/CollectorEngine.class
+agent/searialization/JacksonTelemetrySerializer.class
 agent/platform/Platform.class
 configuration/source/properties/PropertiesConfigurationSource.class
 configuration/source/defaultprovider/DefaultConfigurationSource.class
@@ -11,9 +12,12 @@ agent/platform/disk/impl/FileStoreDIskProvider.class
 exceptions/ConfigurationLoadException.class
 configuration/validation/ConfigurationValidator.class
 agent/platform/cpu/impl/MxBeanCpuProvider.class
+exceptions/TransportException.class
 agent/reporter/impl/ConsoleReporter.class
 exceptions/AgentLifecycleException.class
+agent/reporter/formatter/TelemetryFormatter.class
 cli/command/CommandLineFactory.class
+agent/reporter/impl/HttpReporter.class
 agent/schedular/Scheduler.class
 agent/platform/disk/DiskSnapshot.class
 agent/lifecycle/DefaultAgent.class
@@ -21,11 +25,13 @@ exceptions/ConfigurationValidationException.class
 agent/platform/windows/WindowsPlatform.class
 cli/command/StartCommand.class
 configuration/source/ConfigurationSource.class
+exceptions/SerializationException.class
 TelemetryAgent.class
 agent/collector/Collector.class
 agent/reporter/Reporter.class
 agent/collector/memory/MemoryCollector.class
 agent/platform/cpu/CpuSnapshot.class
+agent/transport/TransportFactory.class
 agent/platform/PlatformFactory.class
 agent/collector/CollectorRegister.class
 agent/telemetry/MetricUnit.class
@@ -42,6 +48,8 @@ cli/command/HelpCommand.class
 agent/collector/manager/CollectorManager.class
 agent/collector/disk/DiskCollector.class
 agent/collector/cpu/CpuCollector.class
+exceptions/ResourceNotFoundException.class
+agent/transport/TelemetryTransport.class
 agent/platform/linux/LinuxPlatform.class
 cli/command/Command.class
 agent/platform/mac/MacPlatform.class
@@ -50,3 +58,4 @@ agent/telemetry/Metric.class
 agent/lifecycle/Agent.class
 configuration/source/argunments/ArgumentsConfigurationSource.class
 agent/platform/memory/MemoryProvider.class
+agent/transport/http/HttpTransport.class

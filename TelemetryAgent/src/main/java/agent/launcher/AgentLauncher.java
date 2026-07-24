@@ -60,7 +60,7 @@ public class AgentLauncher {
 
 
         List<Reporter> reporters = List.of(
-                new ConsoleReporter(),
+//                new ConsoleReporter(),
                 new FileReporter(Paths.get("logs")),
                 new HttpReporter(transport)
         );

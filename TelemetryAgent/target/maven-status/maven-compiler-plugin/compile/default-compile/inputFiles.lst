@@ -27,13 +27,19 @@
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/platform/network/NetworkProvider.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/platform/windows/WindowsPlatform.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/Reporter.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/formatter/TelemetryFormatter.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/impl/ConsoleReporter.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/impl/FileReporter.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/impl/HttpReporter.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/DefaultSchedular.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/Scheduler.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/searialization/JacksonTelemetrySerializer.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/Metric.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/MetricUnit.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/TelemetryBatch.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/transport/TelemetryTransport.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/transport/TransportFactory.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/transport/http/HttpTransport.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/cli/CommandParser.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/cli/command/Command.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/cli/command/CommandLineFactory.java
@@ -50,3 +56,6 @@
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/exceptions/AgentLifecycleException.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/exceptions/ConfigurationLoadException.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/exceptions/ConfigurationValidationException.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/exceptions/ResourceNotFoundException.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/exceptions/SerializationException.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/exceptions/TransportException.java

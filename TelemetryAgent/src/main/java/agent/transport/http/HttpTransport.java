@@ -24,25 +24,40 @@ public class HttpTransport implements TelemetryTransport {
         this.uri = uri;
     }
 
+
     @Override
     public void send(TelemetryBatch telemetryBatch) {
 
+        System.out.println("===== SENDING TELEMETRY =====");
+        System.out.println("Destination : " + uri);
+        System.out.println("Timestamp   : " + telemetryBatch.getTimestamp());
+        System.out.println("Metrics     : " + telemetryBatch.getMetrics().size());
 
         String serialized = serializer.serialize(telemetryBatch);
 
-        HttpRequest request = buildRequest(serialized,uri);
+        System.out.println("Payload:");
+        System.out.println(serialized);
+
+        HttpRequest request = buildRequest(serialized, uri);
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 200){
-                System.out.println("**Server Received the data**");
+            HttpResponse<String> response =
+                    client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("HTTP Status : " + response.statusCode());
+
+            if (!response.body().isBlank()) {
+                System.out.println("Response:");
+                System.out.println(response.body());
             }
 
             if (response.statusCode() < 200 || response.statusCode() >= 300) {
                 throw new TransportException(
                         "Failed to send telemetry. HTTP Status: " + response.statusCode());
             }
+
+            System.out.println("Telemetry sent successfully.");
 
         } catch (IOException e) {
             throw new TransportException("I/O error while sending telemetry.", e);
@@ -51,10 +66,7 @@ public class HttpTransport implements TelemetryTransport {
             Thread.currentThread().interrupt();
             throw new TransportException("HTTP request interrupted.", e);
         }
-
-
     }
-
     private HttpRequest buildRequest(String serialized, URI uri) {
         return  HttpRequest.newBuilder()
                 .header("Content-Type", "application/json")
