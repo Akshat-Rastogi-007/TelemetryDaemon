@@ -5,6 +5,7 @@ TelemetryAgent/logs/telemetry.log
 prompt.txt
 TelemetryDaemon_Roadmap.md
 TelemetryServer/src/main/resources/application.properties
+TelemetryServer/src/test
 
 HELP.md
 target/
