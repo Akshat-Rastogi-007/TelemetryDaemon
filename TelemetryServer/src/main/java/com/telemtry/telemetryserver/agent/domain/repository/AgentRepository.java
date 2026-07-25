@@ -1,9 +1,21 @@
 package com.telemtry.telemetryserver.agent.domain.repository;
 
 import com.telemtry.telemetryserver.agent.domain.model.Agent;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
-public interface AgentRepository extends JpaRepository<Agent,Long> {
+public interface AgentRepository {
+
+    Agent save(Agent agent);
+
+    Optional<Agent> findById(long id);
+
+    List<Agent> findAll(String userId);
+
+    void delete(Agent agent);
+
+    boolean existsById(long id);
 }
