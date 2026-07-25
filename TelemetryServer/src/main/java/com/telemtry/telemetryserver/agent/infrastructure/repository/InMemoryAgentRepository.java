@@ -33,6 +33,11 @@ public class InMemoryAgentRepository implements AgentRepository {
     }
 
     @Override
+    public Optional<Agent> findByInstallationId(String secureHash) {
+        return Optional.empty();
+    }
+
+    @Override
     public void delete(Agent agent) {
 
     }

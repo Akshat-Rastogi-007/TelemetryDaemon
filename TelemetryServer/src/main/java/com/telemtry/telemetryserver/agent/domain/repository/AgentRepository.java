@@ -15,6 +15,8 @@ public interface AgentRepository {
 
     List<Agent> findAll(String userId);
 
+    Optional<Agent> findByInstallationId(String secureHash);
+
     void delete(Agent agent);
 
     boolean existsById(long id);

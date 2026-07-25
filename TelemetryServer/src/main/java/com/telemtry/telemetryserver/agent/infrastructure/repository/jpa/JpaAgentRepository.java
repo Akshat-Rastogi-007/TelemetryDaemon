@@ -18,6 +18,12 @@ public class JpaAgentRepository implements AgentRepository {
         this.repository = repository;
     }
 
+    @Override
+    public Optional<Agent> findByInstallationId(String installationId) {
+
+        return repository.findAgentByInstallationId(installationId);
+
+    }
 
     @Override
     public Agent save(Agent agent) {
