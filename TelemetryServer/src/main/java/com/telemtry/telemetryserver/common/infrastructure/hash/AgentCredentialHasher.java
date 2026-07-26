@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.agent.infrastructure.security.secureKeyHashService;
+package com.telemtry.telemetryserver.common.security.hash;
 
 import org.springframework.context.annotation.Configuration;
 

@@ -1,6 +1,7 @@
-package com.telemtry.telemetryserver.agent.infrastructure.security.secureKeyHashService;
+package com.telemtry.telemetryserver.common.security.hash.secureKeyHashService;
 
 import com.telemtry.telemetryserver.common.exception.AgentCredentialGenerationException;
+import com.telemtry.telemetryserver.common.security.hash.AgentCredentialHasher;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -8,7 +9,7 @@ import java.security.MessageDigest;
 import java.util.HexFormat;
 
 @Component("sha256CredentialHasher")
-public class Sha256CredentialHasher implements AgentCredentialHasher{
+public class Sha256CredentialHasher implements AgentCredentialHasher {
 
 
     @Override
