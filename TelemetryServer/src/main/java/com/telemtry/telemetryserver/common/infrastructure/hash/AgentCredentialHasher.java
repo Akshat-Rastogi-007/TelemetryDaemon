@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.common.security.hash;
+package com.telemtry.telemetryserver.common.infrastructure.hash;
 
 import org.springframework.context.annotation.Configuration;
 

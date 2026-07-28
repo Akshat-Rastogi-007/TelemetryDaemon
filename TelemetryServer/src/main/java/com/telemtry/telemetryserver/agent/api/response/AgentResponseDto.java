@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.agent.api;
+package com.telemtry.telemetryserver.agent.api.response;
 
 import lombok.Data;
 

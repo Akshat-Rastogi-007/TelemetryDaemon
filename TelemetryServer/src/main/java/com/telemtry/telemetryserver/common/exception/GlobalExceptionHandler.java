@@ -1,7 +1,6 @@
 package com.telemtry.telemetryserver.common.exception;
 
 import com.telemtry.telemetryserver.common.domain.ApiResponseDto;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,25 +12,91 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Map EMPTY_MAP  = Collections.EMPTY_MAP;
+    private static final Map<String, String> EMPTY_MAP = Collections.emptyMap();
 
 
-    @ExceptionHandler
-    public ResponseEntity<ApiResponseDto<?>> resourceNotFoundException(ResourceNotFoundException resourceNotFoundException){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponseDto<?>> resourceNotFoundException(
+            ResourceNotFoundException e
+    ) {
 
-        return new ResponseEntity<>(
-
-                new ApiResponseDto<>(
-
-                        EMPTY_MAP,
-                        HttpStatus.NOT_FOUND,
-                        "Resource " + resourceNotFoundException.getMessage() + " not found "
-
-                ),
-                HttpStatus.NOT_FOUND
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                e.getMessage()
         );
-
     }
 
 
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ApiResponseDto<?>> resourceAlreadyExistsException(
+            ResourceAlreadyExistsException e
+    ) {
+
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                e.getMessage()
+        );
+    }
+
+
+    @ExceptionHandler(TokenInvalidException.class)
+    public ResponseEntity<ApiResponseDto<?>> tokenInvalidException(
+            TokenInvalidException e
+    ) {
+
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                e.getMessage()
+        );
+    }
+
+
+    @ExceptionHandler(UnauthenticatedException.class)
+    public ResponseEntity<ApiResponseDto<?>> unauthenticatedException(
+            UnauthenticatedException e
+    ) {
+
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                e.getMessage()
+        );
+    }
+
+
+    @ExceptionHandler(AgentCredentialGenerationException.class)
+    public ResponseEntity<ApiResponseDto<?>> agentCredentialGenerationException(
+            AgentCredentialGenerationException e
+    ) {
+
+        return buildResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                e.getMessage()
+        );
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponseDto<?>> exception(Exception e) {
+
+        return buildResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                e.getMessage()
+        );
+    }
+
+
+    private ResponseEntity<ApiResponseDto<?>> buildResponse(
+            HttpStatus status,
+            String message
+    ) {
+
+        return new ResponseEntity<>(
+                new ApiResponseDto<>(
+                        EMPTY_MAP,
+                        status,
+                        message
+                ),
+                status
+        );
+    }
 }

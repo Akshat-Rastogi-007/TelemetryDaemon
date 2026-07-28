@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.agent.infrastructure.security;
+package com.telemtry.telemetryserver.agent.infrastructure.secureKeyGenerator;
 
 import org.springframework.context.annotation.Configuration;
 

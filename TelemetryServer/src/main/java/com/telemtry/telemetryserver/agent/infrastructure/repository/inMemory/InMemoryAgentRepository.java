@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.agent.infrastructure.repository;
+package com.telemtry.telemetryserver.agent.infrastructure.repository.inMemory;
 
 import com.telemtry.telemetryserver.agent.domain.model.Agent;
 import com.telemtry.telemetryserver.agent.domain.repository.AgentRepository;

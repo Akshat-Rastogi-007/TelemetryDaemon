@@ -1,6 +1,5 @@
-package com.telemtry.telemetryserver.agent.infrastructure.security.secureKeyGenerator;
+package com.telemtry.telemetryserver.agent.infrastructure.secureKeyGenerator;
 
-import com.telemtry.telemetryserver.agent.infrastructure.security.AgentCredentialGenerator;
 import org.springframework.context.annotation.Configuration;
 
 import java.security.SecureRandom;

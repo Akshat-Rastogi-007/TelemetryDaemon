@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -31,6 +32,7 @@ public class Agent {
 
     private String userId; // need to change
 
+    @CreationTimestamp
     private LocalDateTime registeredAt;
     private LocalDateTime lastSeenAt;
     private LocalDateTime lastHeartBeat;

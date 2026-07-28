@@ -2,7 +2,6 @@ package com.telemtry.telemetryserver.agent.infrastructure.repository.jpa;
 
 import com.telemtry.telemetryserver.agent.domain.model.Agent;
 import com.telemtry.telemetryserver.agent.domain.repository.AgentRepository;
-import com.telemtry.telemetryserver.agent.infrastructure.repository.AgentJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,7 +1,7 @@
-package com.telemtry.telemetryserver.common.security.hash.secureKeyHashService;
+package com.telemtry.telemetryserver.common.infrastructure.hash.secureKeyHashService;
 
 import com.telemtry.telemetryserver.common.exception.AgentCredentialGenerationException;
-import com.telemtry.telemetryserver.common.security.hash.AgentCredentialHasher;
+import com.telemtry.telemetryserver.common.infrastructure.hash.AgentCredentialHasher;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
