@@ -1,264 +1,477 @@
-# TelemetryDaemon
+# TelemetryAgent
 
-TelemetryDaemon is a lightweight, extensible system monitoring agent built in Java.
+## A Production-Oriented Java Telemetry Collection Agent
 
-The agent runs on client machines, collects system telemetry such as CPU, memory, disk, and (future) network metrics, and is designed to periodically send them to a centralized backend for monitoring and analysis.
+TelemetryAgent is a lightweight, extensible system monitoring agent built from scratch in Java.
 
-This project is being built from scratch with a strong focus on clean architecture, SOLID principles, object-oriented design, and production-quality engineering practices. The long-term goal is to rewrite the agent in Rust while keeping the backend in Spring Boot.
+The agent runs on client machines, collects system-level telemetry such as CPU, memory, disk, and future network metrics, and is designed to securely communicate with a centralized backend for monitoring and analysis.
 
----
-
-# 🚀 Vision
-
-TelemetryDaemon aims to become a production-ready monitoring agent capable of:
-
-- System resource monitoring
-- Secure agent registration
-- Periodic heartbeat scheduling
-- Modular telemetry collection
-- Remote command execution
-- Offline telemetry buffering
-- Automatic retry and recovery
-- Plugin-based collector architecture
-- Cross-platform support (Linux, Windows, macOS)
-
----
-
-# 🏗️ Current Progress
-
-## ✅ Implemented
-
-### CLI & Configuration
-
-- CLI command parser
-- Command registry
-- Command abstraction
-- Configuration loading pipeline
-- Configuration validation
-- Default configuration support
-- Properties file support
-- Command-line argument overrides
-
-### Agent Lifecycle
-
-- Agent abstraction
-- Agent lifecycle management
-- Agent launcher
-- Graceful shutdown hook
-- Scheduler integration
-
-### Telemetry Collection Framework
-
-- Collector abstraction
-- Metric model
-- Snapshot-based platform architecture
-
-### Platform Providers
-
-- CPU Provider
-- Memory Provider
-- Disk Provider
-
-### Collectors
-
-- CPU Collector
-- Memory Collector
-- Disk Collector
-
-### Scheduler
-
-- Scheduled telemetry collection
-- File-based telemetry logging
-- Structured telemetry log output
-
----
-
-## 🚧 In Progress
-
-- Platform abstraction improvements
-- Reporter pipeline
-- Console reporter
-- File reporter
-
----
-
-## 📅 Planned
-
-### Platform
-
-- Advanced Network telemetry
-- Linux-specific metrics
-- Windows platform implementation
-- macOS platform implementation
-
-### Agent
-
-- Registration service
-- Heartbeat service
-- HTTP client
-
-### Telemetry
-
-- Offline telemetry queue
-- Retry mechanism
-- Local persistence
-- HTTP reporter
-
-### Future
-
-- Remote command execution
-- Plugin architecture
-- Docker deployment
-- Rust implementation of the agent
-
----
-
-# 🏛️ Architecture
-
-```
-                  Operating System
-                          │
-                          ▼
-                    Platform Provider
-                          │
-                          ▼
-                      Snapshot Model
-                          │
-                          ▼
-                       Collector
-                          │
-                          ▼
-                    Collection<Metric>
-                          │
-                          ▼
-                      Reporter (Planned)
-                          │
-                          ▼
-                         Backend
-```
-
----
-
-# 📂 Current Architecture
-
-```
-agent
-├── command
-├── config
-├── lifecycle
-├── collector
-│   ├── cpu
-│   ├── memory
-│   └── disk
-├── platform
-│   ├── cpu
-│   ├── memory
-│   └── disk
-├── scheduler
-├── telemetry
-└── launcher
-```
-
----
-
-# 🛠️ Tech Stack
-
-## Current
-
-- Java 21
-- Java CLI
-- ScheduledExecutorService
-- OperatingSystemMXBean
-- Java NIO FileStore
-- Docker (Development)
-
-## Planned
-
-- Spring Boot Backend
-- PostgreSQL
-- Redis
-- Docker
-- Rust Agent
-
----
-
-# 🎯 Design Principles
-
-This project emphasizes:
+The project focuses on building a production-grade observability component with emphasis on:
 
 - Clean Architecture
 - SOLID Principles
-- Separation of Concerns
-- Dependency Injection
+- Modular Design
+- Platform Abstraction
+- Extensible Telemetry Pipelines
+- Secure Agent Communication
+
+The long-term vision is to evolve this agent into a high-performance Rust-based telemetry collector while maintaining a Spring Boot-based monitoring backend.
+
+---
+
+# Overview
+
+Modern observability platforms rely on lightweight agents deployed close to the infrastructure they monitor.
+
+TelemetryAgent aims to provide a scalable agent architecture capable of:
+
+- Collecting system-level metrics
+- Managing agent lifecycle
+- Scheduling periodic telemetry collection
+- Supporting multiple operating systems
+- Securely identifying registered agents
+- Reliably reporting telemetry data
+
+---
+
+# Architecture
+
+TelemetryAgent follows a modular telemetry pipeline.
+
+The execution flow:
+
+Configuration  
+→ Agent Lifecycle  
+→ Scheduler  
+→ Collector Framework  
+→ Platform Providers  
+→ Metric Pipeline  
+→ Reporter Layer  
+→ Backend
+
+Each stage has a clearly defined responsibility and communicates through abstractions.
+
+This allows new collectors, operating systems, and reporting mechanisms to be added without modifying existing components.
+
+---
+
+# Core Features Implemented
+
+## Configuration Framework
+
+A flexible configuration pipeline was implemented to support multiple configuration sources.
+
+Supported sources:
+
+- Command-line arguments
+- Properties files
+- Default configuration values
+
+Implemented components:
+
+- ConfigurationSource abstraction
+- PropertiesConfigurationSource
+- ArgumentsConfigurationSource
+- DefaultConfigurationSource
+- ConfigurationProvider
+- ConfigurationValidator
+
+Design goals:
+
+- Avoid hardcoded configuration
+- Support future configuration sources
+- Keep configuration logic independent from agent execution
+
+Patterns used:
+
 - Strategy Pattern
-- Registry Pattern
-- Composition over Inheritance
-- Platform-independent abstractions
+- Dependency Inversion
 
 ---
 
-# 📌 Project Status
+# Agent Lifecycle Management
 
-This project is under active development.
+TelemetryAgent includes a complete lifecycle management system.
 
-The focus is currently on building a robust and extensible telemetry collection framework before introducing networking and backend communication.
+Implemented capabilities:
 
----
+- Agent initialization
+- Agent startup
+- Runtime state management
+- Graceful shutdown
+- JVM shutdown hook handling
 
-# 🗺️ Roadmap
+Lifecycle states:
 
-## Phase 1 — Foundation ✅
+- NEW
+- STARTING
+- RUNNING
+- STOPPING
+- STOPPED
+- FAILED
 
-- [x] Project initialization
-- [x] CLI command parser
-- [x] Configuration pipeline
-- [x] Agent lifecycle
-- [x] Scheduler
-- [x] Metric model
-- [x] Collector framework
-
----
-
-## Phase 2 — Platform Telemetry 🚧
-
-- [x] CPU Provider & Collector
-- [x] Memory Provider & Collector
-- [x] Disk Provider & Collector
-- [ ] Network Provider & Collector
-- [ ] Platform implementations
+The lifecycle abstraction ensures the agent can safely manage its runtime state and resources.
 
 ---
 
-## Phase 3 — Reporting
+# Scheduler Framework
 
-- [ ] Reporter abstraction
-- [ ] Console reporter
-- [ ] File reporter
-- [ ] HTTP reporter
+A scheduler abstraction was implemented for periodic telemetry execution.
 
----
+Built using:
 
-## Phase 4 — Communication
+- Java ScheduledExecutorService
 
-- [ ] Registration service
-- [ ] Heartbeat service
-- [ ] HTTP client
-- [ ] Backend communication
+Responsibilities:
 
----
+- Schedule telemetry collection tasks
+- Execute collectors periodically
+- Manage scheduler lifecycle
+- Support graceful shutdown
 
-## Phase 5 — Reliability
-
-- [ ] Offline queue
-- [ ] Retry mechanism
-- [ ] Local persistence
-- [ ] Recovery
+The scheduler is independent of collectors, allowing different execution strategies in the future.
 
 ---
 
-## Phase 6 — Advanced Features
+# Extensible Collector Architecture
 
-- [ ] Remote command execution
-- [ ] Plugin architecture
-- [ ] Docker deployment
-- [ ] Rust implementation
+TelemetryAgent uses a modular collector-based design.
+
+Collectors are responsible for:
+
+- Requesting system information
+- Processing collected data
+- Producing standardized telemetry metrics
+
+Currently implemented collectors:
+
+## CPU Collector
+
+Collects CPU-related telemetry.
+
+## Memory Collector
+
+Collects memory utilization information.
+
+## Disk Collector
+
+Collects filesystem usage metrics.
+
+Future collectors:
+
+- Network Collector
+- Process Collector
+- JVM Collector
+- Application Metrics Collector
+
+The collector architecture follows the Open/Closed Principle, allowing new telemetry sources to be introduced without modifying existing components.
+
+---
+
+# Platform Abstraction Layer
+
+TelemetryAgent separates telemetry collection logic from operating system implementations.
+
+Architecture:
+
+Collector  
+↓  
+Platform Provider  
+↓  
+Operating System
+
+This prevents collectors from being tightly coupled to a specific operating system.
+
+Implemented platform providers:
+
+## CPU Provider
+
+Uses:
+
+- OperatingSystemMXBean
+
+Responsible for CPU-related system information.
+
+---
+
+## Memory Provider
+
+Uses:
+
+- OperatingSystemMXBean
+
+Responsible for:
+
+- Total memory
+- Used memory
+- Available memory
+
+---
+
+## Disk Provider
+
+Uses:
+
+- Java NIO FileStore
+
+Responsible for:
+
+- Total disk space
+- Available disk space
+
+---
+
+# Metric Pipeline
+
+A standardized telemetry model was introduced.
+
+Each metric contains:
+
+- Metric name
+- Value
+- Unit
+- Timestamp
+- Additional metadata
+
+Example metrics:
+
+- CPU usage percentage
+- Memory utilization
+- Disk availability
+
+This provides a common format for future reporters and backend ingestion.
+
+---
+
+# Security Architecture
+
+TelemetryAgent is being integrated with a Spring Boot backend.
+
+The security model separates:
+
+## User Authentication
+
+Human users authenticate using:
+
+- Email/password
+- BCrypt password hashing
+- JWT authentication
+
+Authentication flow:
+
+User Credentials  
+→ AuthenticationManager  
+→ UserDetailsService  
+→ Password Verification  
+→ JWT Generation  
+→ Security Context
+
+
+---
+
+## Agent Authentication
+
+Agents require their own identity mechanism.
+
+Instead of using user credentials, agents authenticate using Personal Access Tokens (PAT).
+
+PAT lifecycle:
+
+1. Generate cryptographically secure token
+2. Hash token before storage
+3. Return raw token only once
+4. Validate future requests using hash comparison
+
+This follows the same principles used for API keys and service credentials.
+
+---
+
+# Design Principles
+
+TelemetryAgent follows strong software engineering principles.
+
+## SOLID Principles
+
+### Single Responsibility Principle
+
+Each component has one clear responsibility.
+
+Examples:
+
+- Scheduler handles scheduling
+- Collector handles telemetry collection
+- Provider handles OS interaction
+- Reporter handles telemetry delivery
+
+
+### Open/Closed Principle
+
+The system is open for extension and closed for modification.
+
+Examples:
+
+Adding:
+
+- NetworkCollector
+- New OS provider
+- New reporter
+
+does not require changing existing components.
+
+
+### Dependency Inversion Principle
+
+Core modules depend on abstractions instead of concrete implementations.
+
+Example:
+
+Agent depends on:
+
+- Scheduler interface
+
+instead of:
+
+- DefaultScheduler implementation
+
+---
+
+# Design Patterns Used
+
+## Command Pattern
+
+Used for CLI command execution.
+
+Provides an extensible command framework.
+
+---
+
+## Strategy Pattern
+
+Used for:
+
+- Configuration sources
+- Platform providers
+
+---
+
+## Registry Pattern
+
+Used for command registration and lookup.
+
+---
+
+## Dependency Injection
+
+Used to maintain loose coupling between modules.
+
+---
+
+# Current Implementation Status
+
+Completed:
+
+- CLI command framework
+- Configuration pipeline
+- Configuration validation
+- Agent lifecycle management
+- Graceful shutdown handling
+- Scheduler framework
+- Metric model
+- Collector abstraction
+- CPU telemetry collection
+- Memory telemetry collection
+- Disk telemetry collection
+- Platform provider abstraction
+- Backend authentication foundation
+- Agent credential generation design
+
+---
+
+# Roadmap
+
+## Telemetry Reporting
+
+Upcoming:
+
+- Reporter abstraction
+- Console reporter
+- File reporter
+- HTTP reporter
+
+---
+
+## Backend Communication
+
+Upcoming:
+
+- Agent registration API
+- PAT authentication
+- Heartbeat service
+- HTTP communication
+- Telemetry ingestion pipeline
+
+---
+
+## Reliability
+
+Upcoming:
+
+- Offline telemetry buffering
+- Retry mechanism
+- Local persistence
+- Failure recovery
+
+---
+
+## Advanced Monitoring
+
+Future:
+
+- Network telemetry
+- Process monitoring
+- Remote command execution
+- Plugin-based collectors
+- Container deployment
+- Rust-based agent implementation
+
+---
+
+# Technology Stack
+
+## Agent
+
+- Java 21
+- Maven
+- ScheduledExecutorService
+- Java Management Extensions (JMX)
+- Java NIO
+- Docker
+
+## Backend
+
+- Spring Boot
+- Spring Security
+- JWT
+- PostgreSQL
+- Redis
+
+---
+
+# Current Status
+
+TelemetryAgent has completed the core monitoring engine.
+
+The current implementation is capable of:
+
+- Loading configuration
+- Managing agent lifecycle
+- Scheduling telemetry tasks
+- Collecting system metrics
+- Producing standardized telemetry objects
+
+The next major milestone is enabling secure communication between agents and backend through:
+
+- Agent registration
+- PAT authentication
+- Heartbeat communication
+- Telemetry reporting
