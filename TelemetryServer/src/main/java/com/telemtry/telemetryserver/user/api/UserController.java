@@ -36,7 +36,7 @@ public class UserController {
 
     }
 
-    @GetMapping("/me")
+    @GetMapping("/me/")
     public ResponseEntity<ApiResponseDto<?>> getCurrentUser(){
 
         UserResponseDto currentUser = userService.getCurrentUser();

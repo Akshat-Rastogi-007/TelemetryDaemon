@@ -20,8 +20,6 @@ public class AgentRequestDto {
     private String javaVersion;
     private String operatingSystem;
     private String architecture;
-    private LocalDateTime registeredAt;
-    private LocalDateTime lastSeenAt;
-    private LocalDateTime lastHeartBeat;
+
 
 }

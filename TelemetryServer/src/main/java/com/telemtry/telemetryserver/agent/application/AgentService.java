@@ -6,11 +6,16 @@ import com.telemtry.telemetryserver.agent.domain.model.Agent;
 import com.telemtry.telemetryserver.agent.domain.model.AgentStatus;
 import com.telemtry.telemetryserver.agent.domain.model.SystemInfo;
 import com.telemtry.telemetryserver.agent.domain.repository.AgentRepository;
-import com.telemtry.telemetryserver.agent.infrastructure.secureKeyGenerator.AgentCredentialGenerator;
-import com.telemtry.telemetryserver.common.infrastructure.hash.AgentCredentialHasher;
+import com.telemtry.telemetryserver.common.infrastructure.secureKeyGenerator.SecureKeyGenerator;
+import com.telemtry.telemetryserver.common.infrastructure.hash.Hasher;
 import com.telemtry.telemetryserver.common.exception.ResourceAlreadyExistsException;
+import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
+import com.telemtry.telemetryserver.user.infrastructure.security.pat.PatPrincipal;
 import jakarta.transaction.Transactional;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,31 +25,37 @@ import java.util.Optional;
 public class AgentService {
 
     private final AgentRepository agentRepository;
-    private final AgentCredentialGenerator credentialGenerator;
-    private final AgentCredentialHasher credentialHasher;
+    private final SecureKeyGenerator credentialGenerator;
+    private final Hasher credentialHasher;
+    private final CurrentUserProvider currentUserProvider;
 
 
     public AgentService(
             @Qualifier("jpaAgentRepository")
             AgentRepository agentRepository,
-            @Qualifier("secureRandomCredentialGenerator")
-            AgentCredentialGenerator credentialGenerator,
-            @Qualifier("sha256CredentialHasher")
-            AgentCredentialHasher credentialHasher) {
+            @Qualifier("secureRandomKeyGenerator")
+            SecureKeyGenerator credentialGenerator,
+            @Qualifier("sha256Hasher")
+            Hasher credentialHasher,
+            @Qualifier("patSecurityCurrentUserProvider")
+            CurrentUserProvider currentUserProvider) {
 
         this.agentRepository = agentRepository;
         this.credentialGenerator = credentialGenerator;
         this.credentialHasher = credentialHasher;
+        this.currentUserProvider = currentUserProvider;
     }
 
     @Transactional
     public AgentResponseDto registerAgent(AgentRequestDto dto){
 
+        long userId = currentUserProvider.currentUser().getId();
+
         Optional<Agent> optionalAgent = agentRepository.findByInstallationId(dto.getInstallationId());
         if (optionalAgent.isPresent()){
             throw new ResourceAlreadyExistsException("Agent is already registered");
         }
-        Agent agent = mapToAgent(dto, "admin-123");
+        Agent agent = mapToAgent(dto, userId);
         agent.setRegisteredAt(
                 LocalDateTime.now()
         );
@@ -56,16 +67,21 @@ public class AgentService {
         agent.setSecureHash(hashedKey);
         Agent savedAgent = agentRepository.save(agent);
 
-        AgentResponseDto agentResponseDto = new AgentResponseDto();
-        agentResponseDto.setAgentId(savedAgent.getId());
-        agentResponseDto.setSecureKey(secureKey);
-
-        return agentResponseDto;
+        return mapToAgentResponseDto(savedAgent, secureKey);
 
     }
 
+    @NotNull
+    private static AgentResponseDto mapToAgentResponseDto(Agent savedAgent, String secureKey) {
+        AgentResponseDto agentResponseDto = new AgentResponseDto();
+        agentResponseDto.setAgentId(savedAgent.getPublicId());
+        agentResponseDto.setSecureKey(secureKey);
 
-    private Agent mapToAgent(AgentRequestDto dto, String userId){
+        return agentResponseDto;
+    }
+
+
+    private Agent mapToAgent(AgentRequestDto dto, long userId){
 
         Agent agent = new Agent();
 

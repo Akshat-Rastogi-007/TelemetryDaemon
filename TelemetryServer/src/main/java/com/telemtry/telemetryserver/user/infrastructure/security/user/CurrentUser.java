@@ -1,6 +1,5 @@
-package com.telemtry.telemetryserver.user.infrastructure.security;
+package com.telemtry.telemetryserver.user.infrastructure.security.user;
 
-import com.telemtry.telemetryserver.user.application.user.AccountStatus;
 import com.telemtry.telemetryserver.user.domain.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

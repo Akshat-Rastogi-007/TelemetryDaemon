@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class AgentResponseDto {
 
-    private Long agentId;
+    private String agentId;
     private String secureKey;
 }

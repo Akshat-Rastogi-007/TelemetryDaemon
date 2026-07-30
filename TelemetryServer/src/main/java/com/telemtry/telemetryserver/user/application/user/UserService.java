@@ -1,10 +1,13 @@
 package com.telemtry.telemetryserver.user.application.user;
 
+import com.telemtry.telemetryserver.common.exception.InternalResourceCorruptionError;
 import com.telemtry.telemetryserver.common.exception.ResourceAlreadyExistsException;
 import com.telemtry.telemetryserver.common.exception.TokenInvalidException;
 import com.telemtry.telemetryserver.common.exception.UnauthenticatedException;
+import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
 import com.telemtry.telemetryserver.user.api.request.UserRequestDto;
 import com.telemtry.telemetryserver.user.api.response.UserResponseDto;
+import com.telemtry.telemetryserver.user.application.pat.PersonalAccessTokenService;
 import com.telemtry.telemetryserver.user.domain.model.Roles;
 import com.telemtry.telemetryserver.user.domain.model.User;
 import com.telemtry.telemetryserver.user.domain.repository.UserRepository;
@@ -23,15 +26,21 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final PersonalAccessTokenService service;
+    private final CurrentUserProvider currentUserProvider;
 
     public UserService(
             @Qualifier("jpaUserRepository")
             UserRepository userRepository,
             @Qualifier("passwordEncoder")
-            BCryptPasswordEncoder passwordEncoder
+            BCryptPasswordEncoder passwordEncoder, PersonalAccessTokenService service,
+            @Qualifier("userSecurityCurrentUserProvider")
+            CurrentUserProvider currentUserProvider
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.service = service;
+        this.currentUserProvider = currentUserProvider;
     }
 
 
@@ -59,16 +68,25 @@ public class UserService {
 
     }
 
+    public UserResponseDto updateUser(User user){
+
+        User save = userRepository.save(user);
+
+        return mapToUserResponse(save);
+
+    }
+
     private UserResponseDto mapToUserResponse(User user){
 
         UserResponseDto responseDto = new UserResponseDto();
 
-        responseDto.setId(user.getId());
+        responseDto.setPublicId(user.getPublicId());
         responseDto.setFirstName(user.getFirstName());
         responseDto.setLastName(user.getLastName());
         responseDto.setEmail(user.getEmail());
         responseDto.setRegisteredAt(user.getRegisteredAt());
 
+        responseDto.setPersonalAccessTokenResponseDtoList(service.mapToResponseDto(user.getTokens()));
 
         return responseDto;
     }
@@ -95,28 +113,15 @@ public class UserService {
 
     public UserResponseDto getCurrentUser(){
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null ||
-                !authentication.isAuthenticated()) {
-
-            throw new UnauthenticatedException("Not logged in");
-        }
-
-        UserDetails principal =
-                (UserDetails) authentication.getPrincipal();
+        long id = currentUserProvider.currentUser().getId();
 
 
-        User user = findUserByEmail(principal.getUsername())
-                .orElseThrow(() ->
-                        new TokenInvalidException(
-                                "Token is not valid, Kindly Login again"
-                        )
-                );
-
+        User user = userRepository.findByIdWithTokens(id).orElseThrow(
+                () -> new InternalResourceCorruptionError("Kindly login again")
+        );
 
         return mapToUserResponse(user);
+
     }
 
 }

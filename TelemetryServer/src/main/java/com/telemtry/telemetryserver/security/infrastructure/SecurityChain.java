@@ -1,6 +1,7 @@
 package com.telemtry.telemetryserver.security.infrastructure;
 
 import com.telemtry.telemetryserver.security.application.filter.JwtFilter;
+import com.telemtry.telemetryserver.security.application.filter.PatFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,9 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityChain {
 
     private final JwtFilter jwtAuthenticationFilter;
+    private final PatFilter patFilter;
 
-    public SecurityChain(JwtFilter jwtAuthenticationFilter) {
+    public SecurityChain(JwtFilter jwtAuthenticationFilter, PatFilter patFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.patFilter = patFilter;
     }
 
 
@@ -41,10 +44,15 @@ public class SecurityChain {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .addFilterBefore(
-                        jwtAuthenticationFilter,
+                        patFilter,
                         UsernamePasswordAuthenticationFilter.class
-                );;
+                )
+
+                .addFilterAfter(
+                        jwtAuthenticationFilter,
+                        PatFilter.class);
 
         return http.build();
 

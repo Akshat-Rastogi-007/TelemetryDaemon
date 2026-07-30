@@ -273,7 +273,7 @@ User Credentials
 
 Agents require their own identity mechanism.
 
-Instead of using user credentials, agents authenticate using Personal Access Tokens (PAT).
+Instead of using owner credentials, agents authenticate using Personal Access Tokens (PAT).
 
 PAT lifecycle:
 

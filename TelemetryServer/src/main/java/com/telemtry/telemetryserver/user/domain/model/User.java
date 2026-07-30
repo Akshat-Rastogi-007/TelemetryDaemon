@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -23,6 +23,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    private String publicId;
 
     @NotNull
     private String firstName;
@@ -53,10 +55,17 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<PersonalAccessToken> token = new ArrayList<>();
+    private List<PersonalAccessToken> tokens = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime registeredAt;
+
+    @PrePersist
+    public void generateId() {
+        if (this.publicId == null) {
+            this.publicId = "pat_" + UUID.randomUUID().toString().replace("-", "").substring(0, 20);
+        }
+    }
 
 }
 

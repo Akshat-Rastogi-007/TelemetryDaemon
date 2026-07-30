@@ -42,6 +42,11 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByIdWithTokens(long id){
+        return repository.findByIdWithTokens(id);
+    }
+
+    @Override
     public void delete(User user) {
         repository.delete(user);
     }
