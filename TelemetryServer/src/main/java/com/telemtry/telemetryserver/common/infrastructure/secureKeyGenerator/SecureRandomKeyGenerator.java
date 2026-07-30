@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.agent.infrastructure.secureKeyGenerator;
+package com.telemtry.telemetryserver.common.infrastructure.secureKeyGenerator;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -6,8 +6,8 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 
-@Configuration("secureRandomCredentialGenerator")
-public class SecureRandomCredentialGenerator implements AgentCredentialGenerator {
+@Configuration("secureRandomKeyGenerator")
+public class SecureRandomKeyGenerator implements SecureKeyGenerator {
 
 
     @Override

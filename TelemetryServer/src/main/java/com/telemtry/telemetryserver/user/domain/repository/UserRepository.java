@@ -19,4 +19,6 @@ public interface UserRepository {
 
     void delete(User user);
 
+    public Optional<User> findByIdWithTokens(long id);
+
 }

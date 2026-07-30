@@ -1,15 +1,15 @@
 package com.telemtry.telemetryserver.common.infrastructure.hash.secureKeyHashService;
 
 import com.telemtry.telemetryserver.common.exception.AgentCredentialGenerationException;
-import com.telemtry.telemetryserver.common.infrastructure.hash.AgentCredentialHasher;
+import com.telemtry.telemetryserver.common.infrastructure.hash.Hasher;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.HexFormat;
 
-@Component("sha256CredentialHasher")
-public class Sha256CredentialHasher implements AgentCredentialHasher {
+@Component("sha256Hasher")
+public class Sha256Hasher implements Hasher {
 
 
     @Override

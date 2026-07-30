@@ -13,4 +13,8 @@ public interface PersonalAccessTokenRepository {
     Optional<PersonalAccessToken> findByTokenHash(String hash);
 
     void delete(PersonalAccessToken token);
+
+    Optional<PersonalAccessToken> findByPublicId(String tokenId);
+
+    Optional<PersonalAccessToken> findByTokenHashWithOwner(String hash);
 }

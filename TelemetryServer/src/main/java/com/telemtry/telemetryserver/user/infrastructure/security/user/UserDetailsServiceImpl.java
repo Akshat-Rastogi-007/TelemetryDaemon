@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.user.infrastructure.security;
+package com.telemtry.telemetryserver.user.infrastructure.security.user;
 
 import com.telemtry.telemetryserver.user.application.user.UserService;
 import com.telemtry.telemetryserver.user.domain.model.User;

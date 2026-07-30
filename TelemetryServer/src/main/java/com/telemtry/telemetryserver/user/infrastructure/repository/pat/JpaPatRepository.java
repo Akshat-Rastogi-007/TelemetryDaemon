@@ -12,18 +12,38 @@ import java.util.Optional;
 @Repository("jpaPatRepository")
 public class JpaPatRepository implements PersonalAccessTokenRepository {
 
+    private final PatJpaRepository patJpaRepository;
+
+    public JpaPatRepository(PatJpaRepository patJpaRepository) {
+        this.patJpaRepository = patJpaRepository;
+    }
+
     @Override
     public PersonalAccessToken save(PersonalAccessToken token) {
-        return null;
+        return patJpaRepository.save(token);
     }
 
     @Override
     public Optional<PersonalAccessToken> findByTokenHash(String hash) {
-        return Optional.empty();
+        return patJpaRepository.findByTokenHash(hash);
     }
 
     @Override
     public void delete(PersonalAccessToken token) {
 
+        patJpaRepository.delete(token);
+
     }
+
+    @Override
+    public Optional<PersonalAccessToken> findByPublicId(String tokenId) {
+        return patJpaRepository.findByPublicId(tokenId);
+    }
+
+    @Override
+    public Optional<PersonalAccessToken> findByTokenHashWithOwner(String hash) {
+        return patJpaRepository.findByTokenHashWithOwner(hash);
+    }
+
+
 }
