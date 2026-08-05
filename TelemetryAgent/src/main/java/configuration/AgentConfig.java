@@ -9,6 +9,16 @@ public class AgentConfig {
     private String serverUrl;
     private Duration heartbeatDuration;
     private String transportType;
+    private float version;
+
+
+    public float getVersion() {
+        return version;
+    }
+
+    public void setVersion(float version) {
+        this.version = version;
+    }
 
     public String getTransportType() {
         return transportType;
