@@ -68,4 +68,9 @@ public class JpaAgentRepository implements AgentRepository {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    @Override
+    public Optional<Agent> findBySecureToken(String secureToken) {
+        return repository.findAgentBySecureHashToken(secureToken);
+    }
 }

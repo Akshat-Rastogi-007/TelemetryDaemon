@@ -14,18 +14,18 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InMemoryLatestMetricsRepository implements LatestMetricsRepository {
 
 
-    private final Map<String,TelemetryBatch> inMemoryMap = new ConcurrentHashMap<>();
+    private final Map<Long,TelemetryBatch> inMemoryMap = new ConcurrentHashMap<>();
 
 
     @Override
-    public void save(String agentId,TelemetryBatch telemetryBatch) {
+    public void save(Long agentId,TelemetryBatch telemetryBatch) {
 
         inMemoryMap.put(agentId,telemetryBatch);
 
     }
 
     @Override
-    public Optional<TelemetryBatch> findByAgentId(String agentId) {
+    public Optional<TelemetryBatch> findByAgentId(Long agentId) {
         TelemetryBatch telemetryBatch = inMemoryMap.get(agentId);
         return Optional.ofNullable(telemetryBatch);
     }
@@ -40,7 +40,7 @@ public class InMemoryLatestMetricsRepository implements LatestMetricsRepository 
     }
 
     @Override
-    public void remove(String agentId) {
+    public void remove(Long agentId) {
 
         inMemoryMap.remove(agentId);
 

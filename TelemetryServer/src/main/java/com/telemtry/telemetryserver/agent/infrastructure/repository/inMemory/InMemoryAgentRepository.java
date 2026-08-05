@@ -56,4 +56,9 @@ public class InMemoryAgentRepository implements AgentRepository {
     public void deleteAll() {
 
     }
+
+    @Override
+    public Optional<Agent> findBySecureToken(String secureToken) {
+        return Optional.empty();
+    }
 }

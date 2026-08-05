@@ -10,11 +10,11 @@ import java.util.Optional;
 public interface LatestMetricsRepository {
 
 
-    void save(String agentId,TelemetryBatch telemetryBatch);
+    void save(Long agentId,TelemetryBatch telemetryBatch);
 
-    Optional<TelemetryBatch> findByAgentId(String agentId);
+    Optional<TelemetryBatch> findByAgentId(Long agentId);
 
     List<TelemetryBatch> findAll();
 
-    void remove(String agentId);
+    void remove(Long agentId);
 }

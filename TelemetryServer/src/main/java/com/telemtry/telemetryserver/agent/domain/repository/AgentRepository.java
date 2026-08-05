@@ -24,4 +24,6 @@ public interface AgentRepository {
     List<Agent> findAgentsByUserId(long userId);
 
     void deleteAll();
+
+    Optional<Agent> findBySecureToken(String secureToken);
 }

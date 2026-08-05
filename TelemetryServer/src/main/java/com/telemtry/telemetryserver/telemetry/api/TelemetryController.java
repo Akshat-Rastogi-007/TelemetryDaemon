@@ -39,7 +39,7 @@ public class TelemetryController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTelemetryData(@PathVariable String id){
+    public ResponseEntity<?> getTelemetryData(@PathVariable Long id){
         TelemetryBatchResponse batch = telemetryService.getBatch(id);
 
         return new ResponseEntity<>(
@@ -47,7 +47,7 @@ public class TelemetryController {
                 new ApiResponseDto<>(
                         batch,
                         HttpStatus.OK,
-                        "Latest Metric Retreived"
+                        "Latest Metric Retrieved"
                 ),
                 HttpStatus.OK
         );

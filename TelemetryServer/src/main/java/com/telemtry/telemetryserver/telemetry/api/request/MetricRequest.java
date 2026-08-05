@@ -17,6 +17,8 @@ public class MetricRequest {
 
     private Instant timestamp;
 
+    private String collectorId;
+
     private Map<String, String> attributes;
 
 }

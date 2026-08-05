@@ -115,4 +115,10 @@ public class AgentService {
     public void deleteAllAgents() {
         agentRepository.deleteAll();
     }
+
+    public Optional<Agent> findBySecureToken(String secureToken){
+
+        return agentRepository.findBySecureToken(secureToken);
+
+    }
 }

@@ -10,6 +10,6 @@ public interface TelemetryService {
 
     void submitTelemetry(TelemetryBatchRequest batchRequest);
 
-    TelemetryBatchResponse getBatch(String agentId);
+    TelemetryBatchResponse getBatch(Long agentId);
 
 }
