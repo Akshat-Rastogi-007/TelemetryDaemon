@@ -10,16 +10,16 @@ import com.telemtry.telemetryserver.common.infrastructure.secureKeyGenerator.Sec
 import com.telemtry.telemetryserver.common.infrastructure.hash.Hasher;
 import com.telemtry.telemetryserver.common.exception.ResourceAlreadyExistsException;
 import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
-import com.telemtry.telemetryserver.user.infrastructure.security.pat.PatPrincipal;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class AgentService {
@@ -64,7 +64,7 @@ public class AgentService {
         String secureKey = credentialGenerator.generateSecureKey();
         String hashedKey = credentialHasher.getHash(secureKey);
 
-        agent.setSecureHash(hashedKey);
+        agent.setSecureHashToken(hashedKey);
         Agent savedAgent = agentRepository.save(agent);
 
         return mapToAgentResponseDto(savedAgent, secureKey);
@@ -75,6 +75,7 @@ public class AgentService {
     private static AgentResponseDto mapToAgentResponseDto(Agent savedAgent, String secureKey) {
         AgentResponseDto agentResponseDto = new AgentResponseDto();
         agentResponseDto.setAgentId(savedAgent.getPublicId());
+        agentResponseDto.setInstallationId(savedAgent.getInstallationId());
         agentResponseDto.setSecureKey(secureKey);
 
         return agentResponseDto;
@@ -97,4 +98,21 @@ public class AgentService {
     }
 
 
+    public List<AgentResponseDto> getAllAgents() {
+
+        long userId = currentUserProvider.currentUser().getId();
+
+
+        return agentRepository.
+                findAgentsByUserId(userId)
+                .stream()
+                .map(agent ->
+                        mapToAgentResponseDto(agent, "")
+                ).toList();
+
+    }
+
+    public void deleteAllAgents() {
+        agentRepository.deleteAll();
+    }
 }

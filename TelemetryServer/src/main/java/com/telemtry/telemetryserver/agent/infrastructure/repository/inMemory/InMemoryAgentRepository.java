@@ -46,4 +46,14 @@ public class InMemoryAgentRepository implements AgentRepository {
     public boolean existsById(long id) {
         return false;
     }
+
+    @Override
+    public List<Agent> findAgentsByUserId(long userId) {
+        return List.of();
+    }
+
+    @Override
+    public void deleteAll() {
+
+    }
 }

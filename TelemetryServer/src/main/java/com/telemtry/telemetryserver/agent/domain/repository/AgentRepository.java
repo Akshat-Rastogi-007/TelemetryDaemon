@@ -20,4 +20,8 @@ public interface AgentRepository {
     void delete(Agent agent);
 
     boolean existsById(long id);
+
+    List<Agent> findAgentsByUserId(long userId);
+
+    void deleteAll();
 }

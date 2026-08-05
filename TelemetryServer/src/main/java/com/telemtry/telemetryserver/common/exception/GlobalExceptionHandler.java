@@ -19,6 +19,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponseDto<?>> resourceNotFoundException(
             ResourceNotFoundException e
     ) {
+        e.printStackTrace();
+
 
         return buildResponse(
                 HttpStatus.NOT_FOUND,
@@ -32,6 +34,9 @@ public class GlobalExceptionHandler {
             ResourceAlreadyExistsException e
     ) {
 
+
+        e.printStackTrace();
+
         return buildResponse(
                 HttpStatus.CONFLICT,
                 e.getMessage()
@@ -43,6 +48,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponseDto<?>> tokenInvalidException(
             TokenInvalidException e
     ) {
+
+        e.printStackTrace();
 
         return buildResponse(
                 HttpStatus.UNAUTHORIZED,
@@ -56,6 +63,8 @@ public class GlobalExceptionHandler {
             UnauthenticatedException e
     ) {
 
+        e.printStackTrace();
+
         return buildResponse(
                 HttpStatus.UNAUTHORIZED,
                 e.getMessage()
@@ -68,6 +77,9 @@ public class GlobalExceptionHandler {
             AgentCredentialGenerationException e
     ) {
 
+        e.printStackTrace();
+
+
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 e.getMessage()
@@ -77,6 +89,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseDto<?>> exception(Exception e) {
+
+        e.printStackTrace();
 
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,

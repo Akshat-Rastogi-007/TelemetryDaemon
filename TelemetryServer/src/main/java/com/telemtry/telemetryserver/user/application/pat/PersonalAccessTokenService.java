@@ -29,7 +29,7 @@ public class PersonalAccessTokenService {
 
 
     public PersonalAccessTokenService(JpaPatRepository repository,
-                                      @Qualifier("patSecurityCurrentUserProvider")
+                                      @Qualifier("userSecurityCurrentUserProvider")
                                       CurrentUserProvider currentUserProvider,
                                       @Qualifier("sha256Hasher")
                                       Hasher hasher,

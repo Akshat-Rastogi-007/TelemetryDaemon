@@ -1,10 +1,7 @@
 package com.telemtry.telemetryserver.agent.api.request;
 
-import com.telemtry.telemetryserver.agent.domain.model.AgentStatus;
 import com.telemtry.telemetryserver.agent.domain.model.AuthType;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 public class AgentRequestDto {
@@ -14,7 +11,7 @@ public class AgentRequestDto {
     private AuthType authType;
     private float version;
 
-    private String secureHash;
+    private String agentTokenHash;
     private String installationId;
 
     private String javaVersion;

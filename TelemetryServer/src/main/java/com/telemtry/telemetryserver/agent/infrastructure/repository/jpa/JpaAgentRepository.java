@@ -58,4 +58,14 @@ public class JpaAgentRepository implements AgentRepository {
         return findById(id).isPresent();
 
     }
+
+    @Override
+    public List<Agent> findAgentsByUserId(long userId) {
+        return repository.findAgentsByUserId(userId);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
+    }
 }

@@ -6,10 +6,9 @@ import com.telemtry.telemetryserver.agent.application.AgentService;
 import com.telemtry.telemetryserver.common.domain.ApiResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/app/agent/")
@@ -36,4 +35,31 @@ public class AgentController {
         );
 
     }
+
+    @GetMapping("/all-agents/")
+    public ResponseEntity<ApiResponseDto<?>> getAllAgents(){
+
+        List<AgentResponseDto> allAgents = agentService.getAllAgents();
+
+        return new ResponseEntity<>(new ApiResponseDto<>(allAgents,HttpStatus.OK,"Agents Retrieved"),HttpStatus.OK);
+
+    }
+
+
+    @DeleteMapping("/all-agents/")
+    public ResponseEntity<ApiResponseDto<?>> deleteAllAgents() {
+
+        agentService.deleteAllAgents();
+
+        return new ResponseEntity<>(
+                new ApiResponseDto<>(
+                        null,
+                        HttpStatus.OK,
+                        "All agents deleted successfully."
+                ),
+                HttpStatus.OK
+        );
+
+    }
+
 }
