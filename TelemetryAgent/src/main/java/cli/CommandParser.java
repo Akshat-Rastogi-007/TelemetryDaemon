@@ -2,6 +2,8 @@ package cli;
 
 
 import cli.command.*;
+import cli.command.auth.LoginCommand;
+import cli.command.auth.LogoutCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +14,8 @@ public class CommandParser {
 
     public CommandParser() {
 
+        register("login", LoginCommand::new);
+        register("logout", args -> new LogoutCommand());
         register("start", StartCommand::new);
         register("version", args -> new VersionCommand());
         register("help", args -> new HelpCommand());
