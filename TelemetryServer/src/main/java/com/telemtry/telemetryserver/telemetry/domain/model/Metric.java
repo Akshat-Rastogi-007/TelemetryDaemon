@@ -26,6 +26,8 @@ public class Metric {
 
     private Instant timestamp;
 
+    private String collectorId;
+
     @ElementCollection
     @CollectionTable(
             name = "metric_attributes",

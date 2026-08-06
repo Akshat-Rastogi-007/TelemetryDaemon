@@ -13,4 +13,11 @@ public interface AgentJpaRepository extends JpaRepository<Agent,Long> {
     Optional<Agent> findAgentByInstallationId(String installationId);
 
     List<Agent> findAgentsByUserId(long userId);
+
+    Optional<Agent> findAgentBySecureHashToken(String secureToken);
+
+    Optional<Agent> findAgentByPublicId(String publicId);
+
+    void deleteByPublicId(String id);
+
 }

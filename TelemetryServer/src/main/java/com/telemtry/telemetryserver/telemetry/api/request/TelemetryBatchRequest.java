@@ -10,7 +10,6 @@ import java.util.List;
 public class TelemetryBatchRequest {
 
 
-    private String collectorId;
     private Instant timestamp;
 
     private List<MetricRequest> metrics = new ArrayList<>();
@@ -19,7 +18,6 @@ public class TelemetryBatchRequest {
     @Override
     public String toString() {
         return "TelemetryBatchRequest{" +
-                "collectorId='" + collectorId + '\'' +
                 ", timestamp=" + timestamp +
                 ", metrics=" + metrics +
                 '}';

@@ -15,8 +15,8 @@ public class TelemetryBatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String collectorId;
     private Instant timestamp;
+    private Long agentId;
 
     @OneToMany(
             mappedBy = "telemetryBatch",

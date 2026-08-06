@@ -21,6 +21,8 @@ import agent.schedular.Scheduler;
 import agent.transport.TelemetryTransport;
 import agent.transport.TransportFactory;
 import configuration.AgentConfig;
+import identity.bootstrap.IdentityBootstrap;
+import identity.service.IdentityService;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -36,7 +38,9 @@ public class AgentLauncher {
         System.out.println("*****IMPLEMENTED Default SCHEDULAR*****");
         Scheduler scheduler = new DefaultSchedular();
 
-        TransportFactory transportFactory = new TransportFactory(config);
+        IdentityService identityService = IdentityBootstrap.initialize();
+
+        TransportFactory transportFactory = new TransportFactory(config,identityService);
 
         TelemetryTransport transport = transportFactory.create();
 

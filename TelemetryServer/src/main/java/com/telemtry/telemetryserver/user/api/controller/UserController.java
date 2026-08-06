@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.user.api;
+package com.telemtry.telemetryserver.user.api.controller;
 
 import com.telemtry.telemetryserver.common.domain.ApiResponseDto;
 import com.telemtry.telemetryserver.user.api.request.UserRequestDto;

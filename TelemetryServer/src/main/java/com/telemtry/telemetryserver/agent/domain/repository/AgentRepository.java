@@ -19,9 +19,15 @@ public interface AgentRepository {
 
     void delete(Agent agent);
 
+    void delete(String id);
+
     boolean existsById(long id);
 
     List<Agent> findAgentsByUserId(long userId);
 
     void deleteAll();
+
+    Optional<Agent> findBySecureToken(String secureToken);
+
+    Optional<Agent> findByPublicId(String publicId);
 }

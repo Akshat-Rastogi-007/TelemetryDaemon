@@ -4,6 +4,7 @@ import agent.searialization.JacksonTelemetrySerializer;
 import agent.telemetry.TelemetryBatch;
 import agent.transport.TelemetryTransport;
 import exceptions.TransportException;
+import identity.service.IdentityService;
 
 import java.io.IOException;
 import java.net.URI;
@@ -16,12 +17,14 @@ public class HttpTransport implements TelemetryTransport {
     private final HttpClient client;
     private final JacksonTelemetrySerializer serializer;
     private final URI uri;
+    private final IdentityService identityService;
 
 
-    public HttpTransport(HttpClient client, JacksonTelemetrySerializer serializer, URI uri) {
+    public HttpTransport(HttpClient client, JacksonTelemetrySerializer serializer, URI uri, IdentityService identityService) {
         this.client = client;
         this.serializer = serializer;
         this.uri = uri;
+        this.identityService = identityService;
     }
 
 
@@ -38,7 +41,8 @@ public class HttpTransport implements TelemetryTransport {
         System.out.println("Payload:");
         System.out.println(serialized);
 
-        HttpRequest request = buildRequest(serialized, uri);
+        String agentToken = identityService.getIdentity().getAgentToken();
+        HttpRequest request = buildRequest(serialized, uri,agentToken);
 
         try {
 
@@ -63,14 +67,17 @@ public class HttpTransport implements TelemetryTransport {
             throw new TransportException("I/O error while sending telemetry.", e);
 
         } catch (InterruptedException e) {
+            e.printStackTrace();
             Thread.currentThread().interrupt();
             throw new TransportException("HTTP request interrupted.", e);
         }
     }
-    private HttpRequest buildRequest(String serialized, URI uri) {
+    private HttpRequest buildRequest(String serialized, URI uri, String agentToken) {
+        System.out.println("Bearer " + agentToken);
         return  HttpRequest.newBuilder()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
+                .header("Authorization", "Bearer " + agentToken)
                 .POST(HttpRequest.BodyPublishers.ofString(serialized))
                 .uri(uri)
                 .build();

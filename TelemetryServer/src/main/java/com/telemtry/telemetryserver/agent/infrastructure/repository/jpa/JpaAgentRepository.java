@@ -53,6 +53,12 @@ public class JpaAgentRepository implements AgentRepository {
     }
 
     @Override
+    public void delete(String id) {
+
+        repository.deleteByPublicId(id);
+    }
+
+    @Override
     public boolean existsById(long id) {
 
         return findById(id).isPresent();
@@ -68,4 +74,16 @@ public class JpaAgentRepository implements AgentRepository {
     public void deleteAll() {
         repository.deleteAll();
     }
+
+    @Override
+    public Optional<Agent> findBySecureToken(String secureToken) {
+        return repository.findAgentBySecureHashToken(secureToken);
+    }
+
+    @Override
+    public Optional<Agent> findByPublicId(String publicId) {
+        return repository.findAgentByPublicId(publicId);
+    }
+
+
 }

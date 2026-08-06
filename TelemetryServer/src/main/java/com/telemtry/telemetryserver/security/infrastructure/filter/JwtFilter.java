@@ -1,4 +1,4 @@
-package com.telemtry.telemetryserver.security.application.filter;
+package com.telemtry.telemetryserver.security.infrastructure.filter;
 
 import com.telemtry.telemetryserver.security.application.JwtService;
 import jakarta.servlet.FilterChain;
