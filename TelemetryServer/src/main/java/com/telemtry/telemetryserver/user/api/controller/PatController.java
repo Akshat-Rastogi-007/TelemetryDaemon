@@ -1,8 +1,7 @@
-package com.telemtry.telemetryserver.user.api;
+package com.telemtry.telemetryserver.user.api.controller;
 
 import com.telemtry.telemetryserver.common.domain.ApiResponseDto;
 import com.telemtry.telemetryserver.user.api.request.PersonalAccessTokenRequestDto;
-import com.telemtry.telemetryserver.user.api.response.PersonalAccessTokenResponseDto;
 import com.telemtry.telemetryserver.user.application.pat.PersonalAccessTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -43,6 +43,11 @@ public class InMemoryAgentRepository implements AgentRepository {
     }
 
     @Override
+    public void delete(String id) {
+
+    }
+
+    @Override
     public boolean existsById(long id) {
         return false;
     }
@@ -59,6 +64,11 @@ public class InMemoryAgentRepository implements AgentRepository {
 
     @Override
     public Optional<Agent> findBySecureToken(String secureToken) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Agent> findByPublicId(String publicId) {
         return Optional.empty();
     }
 }

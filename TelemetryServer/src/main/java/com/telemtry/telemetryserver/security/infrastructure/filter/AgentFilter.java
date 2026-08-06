@@ -1,7 +1,6 @@
-package com.telemtry.telemetryserver.security.application.filter;
+package com.telemtry.telemetryserver.security.infrastructure.filter;
 
-
-import com.telemtry.telemetryserver.user.api.PatAuthenticator;
+import com.telemtry.telemetryserver.agent.api.AgentAuthenticator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,25 +14,26 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class PatFilter extends OncePerRequestFilter {
+public class AgentFilter extends OncePerRequestFilter {
 
-    private final PatAuthenticator patAuthenticationService;
+    private final AgentAuthenticator agentAuthenticator;
 
-    public PatFilter(
-            @Qualifier("patAuthenticationService")
-            PatAuthenticator patAuthenticationService) {
-        this.patAuthenticationService = patAuthenticationService;
+    public AgentFilter(
+            @Qualifier("agentAuthenticationService")
+            AgentAuthenticator agentAuthenticator) {
+        this.agentAuthenticator = agentAuthenticator;
     }
-
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
-    ) throws ServletException, IOException {
+    )
+            throws ServletException, IOException {
 
-        final String authorizationHeader = request.getHeader("Authorization");
+
+        String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -42,21 +42,17 @@ public class PatFilter extends OncePerRequestFilter {
 
         String rawToken = authorizationHeader.substring(7);
 
-
-        if (!rawToken.startsWith("pat_")) {
+        if (!rawToken.startsWith("agt_")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        Authentication authentication =
-                patAuthenticationService.authenticate(rawToken);
+        Authentication authenticate = agentAuthenticator.authenticate(rawToken);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        
+
         filterChain.doFilter(request,response);
+
     }
-
-
 }
-
