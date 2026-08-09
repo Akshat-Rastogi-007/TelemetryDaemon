@@ -4,6 +4,8 @@ import com.telemtry.telemetryserver.common.exception.UnauthenticatedException;
 import com.telemtry.telemetryserver.user.api.PatAuthenticator;
 import com.telemtry.telemetryserver.user.application.pat.PersonalAccessTokenService;
 import com.telemtry.telemetryserver.user.domain.model.PersonalAccessToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ import java.util.Optional;
 @Service("patAuthenticationService")
 public class PatAuthenticationService implements PatAuthenticator {
 
+    private final Logger logger =
+            LoggerFactory
+                    .getLogger(PatAuthenticationService.class);
     private final PersonalAccessTokenService service;
 
     public PatAuthenticationService(PersonalAccessTokenService service) {
@@ -21,26 +26,46 @@ public class PatAuthenticationService implements PatAuthenticator {
 
     @Override
     public Authentication authenticate(String rawPat) {
+        logger.debug("Authenticating Personal Access Token.");
 
-        Optional<PersonalAccessToken> byTokenHash = service.findByTokenHashWithOwner(rawPat);
+        Optional<PersonalAccessToken> optionalPat =
+                service.findByTokenHashWithOwner(rawPat);
 
-        if (byTokenHash.isEmpty())
-            throw new UnauthenticatedException("Kindly check your PAT again");
+        if (optionalPat.isEmpty()) {
 
-        PersonalAccessToken personalAccessToken = byTokenHash.get();
+            logger.warn("PAT authentication failed. Token not found.");
 
-        boolean expiredOrRevoked = service.isExpiredOrRevoked(personalAccessToken);
-
-        if (expiredOrRevoked){
-
-            throw new UnauthenticatedException("Pat is expired or revoked, kindly check again");
-
+            throw new UnauthenticatedException(
+                    "Invalid Personal Access Token."
+            );
         }
 
-        PatPrincipal patPrincipal = new PatPrincipal(personalAccessToken.getOwner(), personalAccessToken);
+        PersonalAccessToken personalAccessToken = optionalPat.get();
 
-        return new PatAuthenticationToken(
-                patPrincipal
+        if (service.isExpiredOrRevoked(personalAccessToken)) {
+
+            logger.warn(
+                    "PAT authentication failed. TokenId={} is expired or revoked.",
+                    personalAccessToken.getPublicId()
+            );
+
+            throw new UnauthenticatedException(
+                    "Personal Access Token has expired or has been revoked."
+            );
+        }
+
+        logger.info(
+                "PAT authenticated successfully. TokenId={}",
+                personalAccessToken.getPublicId()
         );
+
+        PatPrincipal patPrincipal =
+                new PatPrincipal(
+                        personalAccessToken.getOwner(),
+                        personalAccessToken
+                );
+
+        return new PatAuthenticationToken(patPrincipal);
     }
 }
+

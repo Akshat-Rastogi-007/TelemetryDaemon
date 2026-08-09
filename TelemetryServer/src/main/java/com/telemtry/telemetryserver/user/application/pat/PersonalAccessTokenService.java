@@ -1,17 +1,17 @@
 package com.telemtry.telemetryserver.user.application.pat;
 
-import com.telemtry.telemetryserver.common.exception.InternalResourceCorruptionError;
 import com.telemtry.telemetryserver.common.exception.ResourceNotFoundException;
 import com.telemtry.telemetryserver.common.infrastructure.hash.Hasher;
 import com.telemtry.telemetryserver.common.infrastructure.secureKeyGenerator.SecureKeyGenerator;
 import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
 import com.telemtry.telemetryserver.user.api.request.PersonalAccessTokenRequestDto;
 import com.telemtry.telemetryserver.user.api.response.PersonalAccessTokenResponseDto;
-import com.telemtry.telemetryserver.user.application.user.UserService;
 import com.telemtry.telemetryserver.user.domain.model.PersonalAccessToken;
 import com.telemtry.telemetryserver.user.domain.model.User;
 import com.telemtry.telemetryserver.user.infrastructure.repository.pat.JpaPatRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,9 @@ public class PersonalAccessTokenService {
     private final CurrentUserProvider currentUserProvider;
     private final Hasher hasher;
     private final SecureKeyGenerator secureKeyGenerator;
+    private static final Logger logger =
+            LoggerFactory.getLogger(PersonalAccessTokenService.class);
+    private static final String PAT_PREFIX = "pat_";
 
 
     public PersonalAccessTokenService(JpaPatRepository repository,
@@ -45,19 +48,32 @@ public class PersonalAccessTokenService {
     @Transactional
     public String createToken(PersonalAccessTokenRequestDto dto) {
 
-        PersonalAccessToken personalAccessToken = mapToToken(dto);
-
         User user = currentUserProvider.currentUser();
+
+        logger.info(
+                "Creating Personal Access Token for userId={}",
+                user.getId()
+        );
+
+        logger.debug("Generating secure Personal Access Token.");
+
+        PersonalAccessToken personalAccessToken = mapToToken(dto);
 
         personalAccessToken.setOwner(user);
 
-        String patKey = "pat_" + secureKeyGenerator.generateSecureKey().replace("-", "");
+        String patKey = PAT_PREFIX + secureKeyGenerator.generateSecureKey().replace("-", "");
 
         String hashedKey = hasher.getHash(patKey);
 
         personalAccessToken.setTokenHash(hashedKey);
 
         repository.save(personalAccessToken);
+
+        logger.info(
+                "Personal Access Token created successfully. TokenId={}, UserId={}",
+                personalAccessToken.getPublicId(),
+                user.getId()
+        );
 
         return patKey;
     }
@@ -117,13 +133,28 @@ public class PersonalAccessTokenService {
 
     public void revokePat(String tokenId) {
 
+        logger.warn(
+                "Revoking Personal Access Token. TokenId={}",
+                tokenId
+        );
 
         PersonalAccessToken personalAccessToken = repository.findByPublicId(tokenId)
-                .orElseThrow(
-                        () -> new ResourceNotFoundException("PAT token with id " + tokenId + " not found")
+                .orElseThrow( () ->
+                        {
+                            logger.warn(
+                                    "Failed to revoke PAT. TokenId={} was not found.",
+                                    tokenId
+                            );
+
+                            return new ResourceNotFoundException("PAT token with id " + tokenId + " not found");
+                        }
                 );
 
         personalAccessToken.setRevoked(Boolean.TRUE);
         repository.save(personalAccessToken);
+        logger.info(
+                "Personal Access Token revoked successfully. TokenId={}",
+                tokenId
+        );
     }
 }

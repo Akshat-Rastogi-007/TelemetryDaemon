@@ -2,8 +2,6 @@ package com.telemtry.telemetryserver.user.application.user;
 
 import com.telemtry.telemetryserver.common.exception.InternalResourceCorruptionError;
 import com.telemtry.telemetryserver.common.exception.ResourceAlreadyExistsException;
-import com.telemtry.telemetryserver.common.exception.TokenInvalidException;
-import com.telemtry.telemetryserver.common.exception.UnauthenticatedException;
 import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
 import com.telemtry.telemetryserver.user.api.request.UserRequestDto;
 import com.telemtry.telemetryserver.user.api.response.UserResponseDto;
@@ -12,10 +10,9 @@ import com.telemtry.telemetryserver.user.domain.model.Roles;
 import com.telemtry.telemetryserver.user.domain.model.User;
 import com.telemtry.telemetryserver.user.domain.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +25,9 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final PersonalAccessTokenService service;
     private final CurrentUserProvider currentUserProvider;
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserService.class);
+
 
     public UserService(
             @Qualifier("jpaUserRepository")
@@ -46,15 +46,26 @@ public class UserService {
 
     @Transactional
     public UserResponseDto registerUser(UserRequestDto dto){
+        logger.info("Starting user registration.");
 
-        if( userRepository.existsByEmail(dto.getEmail())){
+        logger.debug(
+                "Checking whether email is already registered."
+        );
 
-            throw new ResourceAlreadyExistsException("Mail already registered with another user");
+        if (userRepository.existsByEmail(dto.getEmail())) {
 
+            logger.warn(
+                    "User registration failed. Email is already registered."
+            );
+
+            throw new ResourceAlreadyExistsException(
+                    "Email is already registered."
+            );
         }
 
         User user = mapToUser(dto);
 
+        logger.debug("Encoding user password.");
         String encodedPass = passwordEncoder.encode(dto.getPassword());
 
         user.getRoles().add(Roles.ROLE_USER);
@@ -63,6 +74,10 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
+        logger.info(
+                "User registered successfully. UserId={}",
+                savedUser.getPublicId()
+        );
 
         return mapToUserResponse(savedUser);
 
@@ -70,8 +85,17 @@ public class UserService {
 
     public UserResponseDto updateUser(User user){
 
+        logger.info(
+                "Updating user profile. UserId={}",
+                user.getPublicId()
+        );
+
         User save = userRepository.save(user);
 
+        logger.info(
+                "User profile updated successfully. UserId={}",
+                save.getPublicId()
+        );
         return mapToUserResponse(save);
 
     }
@@ -115,9 +139,31 @@ public class UserService {
 
         long id = currentUserProvider.currentUser().getId();
 
+        User currentUser = currentUserProvider.currentUser();
+
+        logger.info(
+                "Fetching profile for authenticated user. UserId={}",
+                currentUser.getPublicId()
+        );
+
 
         User user = userRepository.findByIdWithTokens(id).orElseThrow(
-                () -> new InternalResourceCorruptionError("Kindly login again")
+
+                () -> {
+                    logger.error(
+                            "Authenticated user could not be found in the database. UserId={}",
+                            currentUser.getPublicId()
+                    );
+
+                    return new InternalResourceCorruptionError(
+                            "Your account could not be loaded. Please log in again."
+                    );
+                }
+        );
+
+        logger.info(
+                "Profile retrieved successfully. UserId={}",
+                user.getPublicId()
         );
 
         return mapToUserResponse(user);

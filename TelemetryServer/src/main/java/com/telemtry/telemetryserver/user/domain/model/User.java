@@ -63,7 +63,7 @@ public class User {
     @PrePersist
     public void generateId() {
         if (this.publicId == null) {
-            this.publicId = "pat_" + UUID.randomUUID().toString().replace("-", "").substring(0, 20);
+            this.publicId = "user_" + UUID.randomUUID().toString().replace("-", "").substring(0, 20);
         }
     }
 

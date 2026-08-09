@@ -5,6 +5,8 @@ import com.telemtry.telemetryserver.user.api.request.UserRequestDto;
 import com.telemtry.telemetryserver.user.api.response.UserResponseDto;
 import com.telemtry.telemetryserver.user.application.user.UserService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,42 +17,56 @@ public class UserController {
 
 
     private final UserService userService;
-
+    private static final Logger logger =
+            LoggerFactory.getLogger(UserController.class);
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+
     @PostMapping("/register-user/")
-    public ResponseEntity<ApiResponseDto<?>> registerUser(@RequestBody @Valid UserRequestDto requestDto){
+    public ResponseEntity<ApiResponseDto<?>> registerUser(
+            @RequestBody @Valid UserRequestDto requestDto) {
+
+        logger.info("Received user registration request.");
 
         UserResponseDto responseDto = userService.registerUser(requestDto);
 
-        return new ResponseEntity<>(
-
-                new ApiResponseDto<>(
-                        responseDto, HttpStatus.CREATED, "Account Created Successfully"
-                )
-                , HttpStatus.CREATED
+        logger.info(
+                "User registered successfully. UserId={}",
+                responseDto.getPublicId()
         );
 
+        return new ResponseEntity<>(
+                new ApiResponseDto<>(
+                        responseDto,
+                        HttpStatus.CREATED,
+                        "Account Created Successfully"
+                ),
+                HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/me/")
-    public ResponseEntity<ApiResponseDto<?>> getCurrentUser(){
+    public ResponseEntity<ApiResponseDto<?>> getCurrentUser() {
+
+        logger.info("Fetching profile for authenticated user.");
 
         UserResponseDto currentUser = userService.getCurrentUser();
 
-        System.out.println(currentUser);
-
-        return new ResponseEntity<>(
-
-                new ApiResponseDto<>(
-                        currentUser, HttpStatus.OK, "Account Retrieved Successfully"
-                )
-                , HttpStatus.OK
+        logger.info(
+                "Profile retrieved successfully. UserId={}",
+                currentUser.getPublicId()
         );
 
-
+        return new ResponseEntity<>(
+                new ApiResponseDto<>(
+                        currentUser,
+                        HttpStatus.OK,
+                        "Account Retrieved Successfully"
+                ),
+                HttpStatus.OK
+        );
     }
 }

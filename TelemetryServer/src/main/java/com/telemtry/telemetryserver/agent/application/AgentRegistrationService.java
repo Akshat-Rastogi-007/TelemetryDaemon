@@ -12,6 +12,8 @@ import com.telemtry.telemetryserver.common.infrastructure.secureKeyGenerator.Sec
 import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,14 @@ import java.util.Optional;
 public class AgentRegistrationService {
 
 
+    public static final String AGENT_TOKEN_PREFIX = "agt_";
     private final AgentRepository agentRepository;
     private final SecureKeyGenerator credentialGenerator;
     private final Hasher credentialHasher;
     private final CurrentUserProvider currentUserProvider;
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(AgentRegistrationService.class);
 
     public AgentRegistrationService(
             @Qualifier("jpaAgentRepository")
@@ -44,10 +50,26 @@ public class AgentRegistrationService {
     @Transactional
     public AgentResponseDto registerAgent(AgentRequestDto dto){
 
+        logger.info(
+                "Starting agent registration. InstallationId={}",
+                dto.getInstallationId()
+        );
+
         long userId = currentUserProvider.currentUser().getId();
 
         Optional<Agent> optionalAgent = agentRepository.findByInstallationId(dto.getInstallationId());
+        logger.debug(
+                "Checking for existing agent with installationId={}",
+                dto.getInstallationId()
+        );
+
         if (optionalAgent.isPresent()){
+
+            logger.warn(
+                    "Agent registration rejected. InstallationId={} is already registered.",
+                    dto.getInstallationId()
+            );
+
             throw new ResourceAlreadyExistsException("Agent is already registered");
         }
         Agent agent = mapToAgent(dto, userId);
@@ -56,13 +78,24 @@ public class AgentRegistrationService {
         );
         agent.setStatus(AgentStatus.OFFLINE);
 
-        String secureKey = "agt_" + credentialGenerator.generateSecureKey();
+        logger.debug("Generating secure agent token.");
+        String secureKey = AGENT_TOKEN_PREFIX + credentialGenerator.generateSecureKey();
 
         String hashedKey =  credentialHasher.getHash(secureKey);
 
         agent.setSecureHashToken(hashedKey);
+
+        logger.debug(
+                "Persisting agent. InstallationId={}",
+                agent.getInstallationId()
+        );
         Agent savedAgent = agentRepository.save(agent);
 
+        logger.info(
+                "Agent registered successfully. AgentId={}, UserId={}",
+                savedAgent.getPublicId(),
+                userId
+        );
         return mapToAgentResponseDto(savedAgent, secureKey);
 
     }
