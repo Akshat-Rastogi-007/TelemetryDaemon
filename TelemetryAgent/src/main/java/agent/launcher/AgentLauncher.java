@@ -8,12 +8,13 @@ import agent.collector.disk.DiskCollector;
 import agent.collector.manager.CollectorManager;
 import agent.collector.memory.MemoryCollector;
 import agent.collector.scheduler.CollectorScheduler;
+import agent.heartbeat.HeartbeatInitializer;
+import agent.heartbeat.service.HeartbeatService;
 import agent.lifecycle.Agent;
 import agent.lifecycle.DefaultAgent;
 import agent.platform.Platform;
 import agent.platform.PlatformFactory;
 import agent.reporter.Reporter;
-import agent.reporter.impl.ConsoleReporter;
 import agent.reporter.impl.FileReporter;
 import agent.reporter.impl.HttpReporter;
 import agent.schedular.DefaultSchedular;
@@ -71,7 +72,10 @@ public class AgentLauncher {
 
         CollectorEngine collectorEngine = new CollectorEngine(collectorScheduler,reporters);
 
-        Agent agent = new DefaultAgent(config,collectorEngine);
+        HeartbeatService heartbeatService = new HeartbeatInitializer(config).initialize();
+
+
+        Agent agent = new DefaultAgent(config,collectorEngine,heartbeatService);
 
         registerShutdownHook(agent);
 

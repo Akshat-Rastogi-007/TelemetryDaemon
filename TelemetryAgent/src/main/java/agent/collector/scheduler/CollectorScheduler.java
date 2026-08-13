@@ -35,7 +35,7 @@ public class CollectorScheduler {
 
             if (register.isEnable()) {
                 System.out.println(register.getCollector().getId());
-                scheduler.schedule(register.getCollector(), reporters, agentConfig.getHeartbeatDuration());
+                scheduler.schedule(register.getCollector(), reporters, agentConfig.getMetricDuration());
             }
         }
 

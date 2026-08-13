@@ -25,10 +25,30 @@ public class PropertiesConfigurationSource implements ConfigurationSource {
 
             properties.load(reader);
 
-            config.setServerUrl(properties.getProperty("server.url"));
-            config.setAgentId(properties.getProperty("agent.id"));
-            config.setHeartbeatDuration(
-                    Duration.ofSeconds(Long.parseLong(properties.getProperty("heartbeat.interval")))
+            config.
+                    setServerUrl(
+                            properties.
+                                    getProperty("server.url")
+                    );
+            config.
+                    setAgentId(
+                            properties.
+                                    getProperty("agent.id")
+                    );
+            config.
+                    setHeartbeatDuration(
+                            Duration.ofSeconds(
+                                    Long.parseLong(
+                                            properties.getProperty("heartbeat.interval")
+                                    )
+                            )
+                    );
+            config.setMetricDuration(
+                    Duration.ofSeconds(
+                            Long.parseLong(
+                                    properties.getProperty("metric.interval")
+                            )
+                    )
             );
             config.setTransportType(properties.getProperty("transport.type"));
 

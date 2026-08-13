@@ -27,6 +27,11 @@ public class ArgumentsConfigurationSource implements ConfigurationSource {
                 config.setHeartbeatDuration(Duration.ofSeconds(heartbeat));
             }
 
+            else if ( arg.startsWith("--metric.interval=")){
+                long metricInterval = Long.parseLong(extractValue(arg));
+                config.setMetricDuration(Duration.ofSeconds(metricInterval));
+            }
+
         }
 
     }
