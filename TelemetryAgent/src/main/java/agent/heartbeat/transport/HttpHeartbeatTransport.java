@@ -1,5 +1,6 @@
 package agent.heartbeat.transport;
 
+import agent.connection.ConnectionStateManager;
 import exceptions.TransportException;
 
 import java.io.IOException;

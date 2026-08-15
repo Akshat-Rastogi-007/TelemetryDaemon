@@ -14,6 +14,7 @@ agent/launcher/AgentLauncher.class
 cli/command/VersionCommand.class
 configuration/AgentConfig.class
 agent/platform/disk/impl/FileStoreDIskProvider.class
+agent/transport/dispatcher/TelemetryDispatcher.class
 exceptions/ConfigurationLoadException.class
 configuration/validation/ConfigurationValidator.class
 agent/platform/cpu/impl/MxBeanCpuProvider.class
@@ -25,6 +26,7 @@ identity/source/file/FileIdentitySource.class
 exceptions/AgentLifecycleException.class
 agent/reporter/formatter/TelemetryFormatter.class
 cli/command/CommandLineFactory.class
+agent/transport/TransportInitializer.class
 agent/reporter/impl/HttpReporter.class
 agent/schedular/Scheduler.class
 agent/platform/disk/DiskSnapshot.class
@@ -34,8 +36,11 @@ registration/request/HttpRegistrationClient.class
 agent/platform/windows/WindowsPlatform.class
 cli/command/StartCommand.class
 configuration/source/ConfigurationSource.class
+agent/heartbeat/transport/HttpHeartbeatTransport.class
+agent/connection/ConnectionState.class
 exceptions/SerializationException.class
 TelemetryAgent.class
+agent/heartbeat/transport/HeartbeatTransport.class
 agent/collector/Collector.class
 cli/command/auth/LoginCommand.class
 agent/reporter/Reporter.class
@@ -47,6 +52,7 @@ agent/collector/CollectorRegister.class
 agent/telemetry/MetricUnit.class
 agent/platform/network/NetworkProvider.class
 agent/telemetry/TelemetryBatch.class
+agent/heartbeat/schedulars/DefaultHeartbeatSchedular.class
 configuration/bootstrap/ConfigurationBootstrap.class
 cli/CommandParser.class
 identity/loader/IdentityLoader.class
@@ -57,14 +63,18 @@ agent/platform/disk/DiskProvider.class
 agent/platform/cpu/CpuProvider.class
 agent/collector/scheduler/CollectorScheduler.class
 configuration/loader/ConfigurationLoader.class
+agent/connection/ConnectionStateManager.class
+agent/heartbeat/HeartbeatInitializer.class
 cli/command/HelpCommand.class
 agent/collector/manager/CollectorManager.class
 cli/command/auth/LogoutCommand.class
+agent/transport/buffer/TransportBuffer.class
 agent/collector/disk/DiskCollector.class
 agent/collector/cpu/CpuCollector.class
 exceptions/ResourceNotFoundException.class
 agent/transport/TelemetryTransport.class
 agent/platform/linux/LinuxPlatform.class
+agent/collector/CollectorInitializer.class
 cli/command/Command.class
 agent/platform/mac/MacPlatform.class
 agent/platform/memory/impl/MxBeanMemoryProvider.class
@@ -73,6 +83,9 @@ registration/RegistrationService.class
 agent/lifecycle/Agent.class
 exceptions/AgentNotRegisteredException.class
 configuration/source/argunments/ArgumentsConfigurationSource.class
+agent/heartbeat/service/HeartbeatService.class
 agent/platform/memory/MemoryProvider.class
 agent/transport/http/HttpTransport.class
 registration/request/RegistrationRequest.class
+agent/heartbeat/service/DefaultHeartbeatService.class
+agent/heartbeat/schedulars/HeartbeatSchedular.class

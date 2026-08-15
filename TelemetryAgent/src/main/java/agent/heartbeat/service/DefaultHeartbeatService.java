@@ -1,5 +1,6 @@
 package agent.heartbeat.service;
 
+import agent.connection.ConnectionStateManager;
 import agent.heartbeat.schedulars.HeartbeatSchedular;
 import agent.heartbeat.transport.HeartbeatTransport;
 
@@ -10,20 +11,38 @@ public class DefaultHeartbeatService implements HeartbeatService{
     private final HeartbeatSchedular heartbeatSchedular;
     private final HeartbeatTransport heartbeatTransport;
     private final Duration heartBeatInterval;
+    private final ConnectionStateManager connectionStateManager;
 
-    public DefaultHeartbeatService(HeartbeatSchedular heartbeatSchedular, HeartbeatTransport heartbeatTransport, Duration heartBeatInterval) {
+    public DefaultHeartbeatService(HeartbeatSchedular heartbeatSchedular,
+                                   HeartbeatTransport heartbeatTransport,
+                                   Duration heartBeatInterval, ConnectionStateManager connectionStateManager) {
         this.heartbeatSchedular = heartbeatSchedular;
         this.heartbeatTransport = heartbeatTransport;
         this.heartBeatInterval = heartBeatInterval;
+        this.connectionStateManager = connectionStateManager;
     }
 
 
     @Override
     public void start() {
 
+
         heartbeatSchedular.schedule(
-                heartbeatTransport::sendHeartbeat,
-                heartBeatInterval
+
+                ()-> {
+                    try {
+                        heartbeatTransport.sendHeartbeat();
+                        connectionStateManager.markConnected();
+                    }
+                    catch (Exception e){
+
+                        connectionStateManager.markDisconnected();
+
+                    }
+
+                }
+                ,heartBeatInterval
+
         );
 
     }
@@ -33,6 +52,7 @@ public class DefaultHeartbeatService implements HeartbeatService{
     public void stop() {
 
         heartbeatSchedular.stop();
+        connectionStateManager.markDisconnected();
 
     }
 }

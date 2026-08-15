@@ -1,6 +1,7 @@
 package agent.heartbeat;
 
 
+import agent.connection.ConnectionStateManager;
 import agent.heartbeat.schedulars.DefaultHeartbeatSchedular;
 import agent.heartbeat.schedulars.HeartbeatSchedular;
 import agent.heartbeat.service.DefaultHeartbeatService;
@@ -19,8 +20,10 @@ public class HeartbeatInitializer {
 
     private final AgentConfig config;
     private final IdentityService identityService;
+    private final ConnectionStateManager connectionStateManager;
 
-    public HeartbeatInitializer(AgentConfig config) {
+    public HeartbeatInitializer(AgentConfig config, ConnectionStateManager connectionStateManager) {
+        this.connectionStateManager = connectionStateManager;
         this.identityService = IdentityBootstrap.initialize();
         this.config = config;
     }
@@ -45,7 +48,8 @@ public class HeartbeatInitializer {
         return new DefaultHeartbeatService(
                 schedular,
                 transport,
-                config.getHeartbeatDuration()
+                config.getHeartbeatDuration(),
+                connectionStateManager
         );
 
     }

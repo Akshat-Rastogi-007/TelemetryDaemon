@@ -10,6 +10,7 @@ import com.telemtry.telemetryserver.common.exception.ResourceAlreadyExistsExcept
 import com.telemtry.telemetryserver.common.infrastructure.hash.Hasher;
 import com.telemtry.telemetryserver.common.infrastructure.secureKeyGenerator.SecureKeyGenerator;
 import com.telemtry.telemetryserver.user.api.CurrentUserProvider;
+import com.telemtry.telemetryserver.user.domain.model.User;
 import jakarta.transaction.Transactional;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ public class AgentRegistrationService {
     private final SecureKeyGenerator credentialGenerator;
     private final Hasher credentialHasher;
     private final CurrentUserProvider currentUserProvider;
+
 
     private static final Logger logger =
             LoggerFactory.getLogger(AgentRegistrationService.class);
@@ -101,8 +103,6 @@ public class AgentRegistrationService {
     }
 
 
-
-
     private Agent mapToAgent(AgentRequestDto dto, long userId){
 
         Agent agent = new Agent();
@@ -129,4 +129,9 @@ public class AgentRegistrationService {
         return agentResponseDto;
     }
 
+    public void heartbeatCheck() {
+
+
+
+    }
 }

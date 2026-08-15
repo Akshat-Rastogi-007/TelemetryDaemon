@@ -52,8 +52,6 @@ public class DefaultSchedular implements Scheduler {
 
         System.out.println("*****Inside Schedular*****");
 
-        Collection<Metric> collectionMetric = collector.collect();
-
         executor.scheduleAtFixedRate(
                 () -> {
 

@@ -26,7 +26,7 @@ public class AgentFilterChain {
 
         http
 
-                .securityMatcher("/app/agent/telemetry/**")
+                .securityMatcher("/app/agent/telemetry/**","/app/agent/heartbeat/**")
 
                 .authorizeHttpRequests(auth ->
                         auth.anyRequest().authenticated()
