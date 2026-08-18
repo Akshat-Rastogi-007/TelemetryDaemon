@@ -2,7 +2,7 @@ package agent.reporter.impl;
 
 import agent.reporter.Reporter;
 import agent.telemetry.TelemetryBatch;
-import agent.transport.dispatcher.TelemetryDispatcher;
+import agent.telemetry.dispatcher.TelemetryDispatcher;
 
 public class HttpReporter implements Reporter {
 
