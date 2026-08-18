@@ -46,8 +46,6 @@ public class FileStoreDIskProvider implements DiskProvider {
             }
         }
 
-        System.out.println("***************************************************************************8");
-        System.out.println(snapshots);
 
         return snapshots;
     }

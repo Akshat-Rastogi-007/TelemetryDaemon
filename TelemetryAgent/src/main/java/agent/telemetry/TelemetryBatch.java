@@ -26,4 +26,12 @@ public class TelemetryBatch {
         this.timestamp = timestamp;
         this.metrics = metrics;
     }
+
+    @Override
+    public String toString() {
+        return "TelemetryBatch{" +
+                "timestamp=" + timestamp +
+                ", metrics=" + metrics.size() +
+                '}';
+    }
 }

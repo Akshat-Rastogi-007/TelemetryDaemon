@@ -8,9 +8,18 @@ public class AgentConfig {
     private String agentId;
     private String serverUrl;
     private Duration heartbeatDuration;
+    private Duration metricDuration;
     private String transportType;
     private float version;
 
+
+    public Duration getMetricDuration() {
+        return metricDuration;
+    }
+
+    public void setMetricDuration(Duration metricDuration) {
+        this.metricDuration = metricDuration;
+    }
 
     public float getVersion() {
         return version;

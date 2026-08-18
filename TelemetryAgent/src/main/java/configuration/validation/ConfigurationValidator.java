@@ -30,6 +30,11 @@ public class ConfigurationValidator {
         }
 
 
+        if ( config.getMetricDuration() == null || config.getMetricDuration().isNegative() || config.getMetricDuration().isZero()){
+            throw new ConfigurationLoadException("Metric Duration is not specified");
+        }
+
+
     }
 
 }

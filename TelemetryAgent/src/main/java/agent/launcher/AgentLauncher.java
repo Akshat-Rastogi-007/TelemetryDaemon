@@ -1,77 +1,46 @@
 package agent.launcher;
 
-import agent.collector.Collector;
 import agent.collector.CollectorEngine;
-import agent.collector.CollectorRegister;
-import agent.collector.cpu.CpuCollector;
-import agent.collector.disk.DiskCollector;
-import agent.collector.manager.CollectorManager;
-import agent.collector.memory.MemoryCollector;
-import agent.collector.scheduler.CollectorScheduler;
+import agent.collector.CollectorInitializer;
+import agent.connection.ConnectionStateManager;
+import agent.heartbeat.HeartbeatInitializer;
+import agent.heartbeat.service.HeartbeatService;
 import agent.lifecycle.Agent;
 import agent.lifecycle.DefaultAgent;
-import agent.platform.Platform;
-import agent.platform.PlatformFactory;
 import agent.reporter.Reporter;
-import agent.reporter.impl.ConsoleReporter;
 import agent.reporter.impl.FileReporter;
 import agent.reporter.impl.HttpReporter;
 import agent.schedular.DefaultSchedular;
 import agent.schedular.Scheduler;
-import agent.transport.TelemetryTransport;
-import agent.transport.TransportFactory;
+import agent.transport.TransportInitializer;
+import agent.telemetry.dispatcher.TelemetryDispatcher;
 import configuration.AgentConfig;
-import identity.bootstrap.IdentityBootstrap;
-import identity.service.IdentityService;
 
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AgentLauncher {
 
     public Agent launch(AgentConfig config){
 
-        System.out.println("*****INSIDE AGENT LAUNCHER*****");
-
-        System.out.println("*****IMPLEMENTED Default SCHEDULAR*****");
         Scheduler scheduler = new DefaultSchedular();
 
-        IdentityService identityService = IdentityBootstrap.initialize();
+        ConnectionStateManager connectionStateManager = new ConnectionStateManager();
 
-        TransportFactory transportFactory = new TransportFactory(config,identityService);
+        HeartbeatService heartbeatService = new HeartbeatInitializer(config,connectionStateManager).initialize();
 
-        TelemetryTransport transport = transportFactory.create();
-
-        Map<String, CollectorRegister> collectorMap = new HashMap<>();
-
-        CollectorManager manager = new CollectorManager(collectorMap);
-
-        Platform platform = new PlatformFactory().create();
-
-        System.out.printf("*****Platform Received -> %s ***** \n ", platform.getId());
-
-        List<Collector> collectors = List.of(
-                new CpuCollector(platform.cpu()),
-                new DiskCollector(platform.disk()),
-                new MemoryCollector(platform.memory())
-        );
-
-        manager.registerCollector(collectors);
-
-        CollectorScheduler collectorScheduler = new CollectorScheduler(manager, scheduler);
-
+        TelemetryDispatcher telemetryDispatcher = new TransportInitializer(config).initialize(connectionStateManager);
 
         List<Reporter> reporters = List.of(
 //                new ConsoleReporter(),
                 new FileReporter(Paths.get("logs")),
-                new HttpReporter(transport)
+                new HttpReporter(telemetryDispatcher)
         );
 
-        CollectorEngine collectorEngine = new CollectorEngine(collectorScheduler,reporters);
 
-        Agent agent = new DefaultAgent(config,collectorEngine);
+        CollectorEngine collectorEngine = new CollectorInitializer(reporters).initialize(scheduler);
+
+        Agent agent = new DefaultAgent(config,collectorEngine,heartbeatService);
 
         registerShutdownHook(agent);
 

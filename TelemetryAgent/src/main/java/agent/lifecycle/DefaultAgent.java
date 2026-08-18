@@ -2,6 +2,8 @@ package agent.lifecycle;
 
 import agent.collector.CollectorEngine;
 import agent.enums.AgentState;
+import agent.heartbeat.HeartbeatInitializer;
+import agent.heartbeat.service.HeartbeatService;
 import agent.schedular.Scheduler;
 import configuration.AgentConfig;
 import exceptions.AgentLifecycleException;
@@ -14,11 +16,12 @@ public class DefaultAgent implements Agent{
     private final AgentConfig agentConfig;
     private final CountDownLatch terminationLatch = new CountDownLatch(1);
     private final CollectorEngine collectorEngine;
+    private final HeartbeatService heartbeatService;
 
-
-    public DefaultAgent(AgentConfig agentConfig, CollectorEngine collectorEngine) {
+    public DefaultAgent(AgentConfig agentConfig, CollectorEngine collectorEngine, HeartbeatService heartbeatService) {
         this.agentConfig = agentConfig;
         this.collectorEngine = collectorEngine;
+        this.heartbeatService = heartbeatService;
     }
 
     @Override
@@ -35,6 +38,7 @@ public class DefaultAgent implements Agent{
 
         collectorEngine.scheduleCollector(agentConfig);
 
+        heartbeatService.start();
 
         state = AgentState.RUNNING;
     }
@@ -51,6 +55,8 @@ public class DefaultAgent implements Agent{
         state = AgentState.STOPPING;
 
         collectorEngine.stop();
+
+        heartbeatService.stop();
 
         state = AgentState.STOPPED;
 
