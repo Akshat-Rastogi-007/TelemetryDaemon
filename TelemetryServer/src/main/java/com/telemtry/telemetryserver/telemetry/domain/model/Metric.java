@@ -3,6 +3,8 @@ package com.telemtry.telemetryserver.telemetry.domain.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -10,7 +12,8 @@ import java.util.Map;
 
 @Entity
 @Table(name = "metrics")
-@Data
+@Getter
+@Setter
 public class Metric {
 
     @Id

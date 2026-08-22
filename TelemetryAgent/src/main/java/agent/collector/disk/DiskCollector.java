@@ -32,45 +32,44 @@ public class DiskCollector implements Collector {
 
         Instant now = Instant.now();
 
-        Collection<DiskSnapshot> snapshotList = diskProvider.snapshot();
+        DiskSnapshot snapshot = diskProvider.snapshot();
 
-        for (DiskSnapshot snapshot : snapshotList) {
 
-            Map<String, String> attributes = new HashMap<>();
-            attributes.put("disk", snapshot.getName());
+        Map<String, String> attributes = new HashMap<>();
+        attributes.put("disk", snapshot.getName());
 
-            metrics.add(new Metric(
-                    "disk.total",
-                    snapshot.getTotalSpace(),
-                    MetricUnit.BYTE,
-                    now,
-                    attributes
-            ));
+        metrics.add(new Metric(
+                "disk.total",
+                snapshot.getTotalSpace(),
+                MetricUnit.BYTE,
+                now,
+                attributes
+        ));
 
-            metrics.add(new Metric(
-                    "disk.used",
-                    snapshot.getUsedSpace(),
-                    MetricUnit.BYTE,
-                    now,
-                    attributes
-            ));
+        metrics.add(new Metric(
+                "disk.used",
+                snapshot.getUsedSpace(),
+                MetricUnit.BYTE,
+                now,
+                attributes
+        ));
 
-            metrics.add(new Metric(
-                    "disk.free",
-                    snapshot.getFreeSpace(),
-                    MetricUnit.BYTE,
-                    now,
-                    attributes
-            ));
+        metrics.add(new Metric(
+                "disk.free",
+                snapshot.getFreeSpace(),
+                MetricUnit.BYTE,
+                now,
+                attributes
+        ));
 
-            metrics.add(new Metric(
-                    "disk.usable",
-                    snapshot.getUsableSpace(),
-                    MetricUnit.BYTE,
-                    now,
-                    attributes
-            ));
-        }
+        metrics.add(new Metric(
+                "disk.usable",
+                snapshot.getUsableSpace(),
+                MetricUnit.BYTE,
+                now,
+                attributes
+        ));
+
 
         return metrics;
 

@@ -28,25 +28,89 @@ public class MemoryCollector implements Collector {
     public Collection<Metric> collect() {
 
         MemorySnapshot snapshot = memoryProvider.snapshot();
+
         Instant now = Instant.now();
+
         Map<String, String> attributes = Map.of(
                 "source", "memory.mxbean"
         );
 
-        double usedMemoryPercentage = (double) snapshot.getUsedMemory() / snapshot.getTotalMemory() * 100;
-        double usedSwapMemoryPercentage = (double) snapshot.getUsedMemory() / snapshot.getTotalMemory() * 100;
+        double usedMemoryPercentage =
+                snapshot.getTotalMemory() == 0
+                        ? 0
+                        : (double) snapshot.getUsedMemory()
+                          / snapshot.getTotalMemory() * 100;
 
+        double usedSwapMemoryPercentage =
+                snapshot.getTotalSwap() == 0
+                        ? 0
+                        : (double) snapshot.getUsedSwap()
+                          / snapshot.getTotalSwap() * 100;
 
         return List.of(
-                new Metric("total.memory", snapshot.getTotalMemory(), MetricUnit.BYTE,now,attributes)
-                , new Metric("free.memory",snapshot.getFreeMemory(),MetricUnit.BYTE,now,attributes)
-                , new Metric("used.memory",snapshot.getUsedMemory(),MetricUnit.COUNT,now,attributes)
-                , new Metric("used.memory.percentage", usedMemoryPercentage,MetricUnit.PERCENT,now,attributes),
-                new Metric("total.swap.memory", snapshot.getTotalSwap(), MetricUnit.BYTE,now,attributes)
-                , new Metric("free.swap.memory",snapshot.getFreeSwap(),MetricUnit.BYTE,now,attributes)
-                , new Metric("used.swap.memory",snapshot.getUsedSwap(),MetricUnit.COUNT,now,attributes)
-                , new Metric("used.memory.percentage", usedSwapMemoryPercentage,MetricUnit.PERCENT,now,attributes)
-        );
+                new Metric(
+                        "total.memory",
+                        snapshot.getTotalMemory(),
+                        MetricUnit.BYTE,
+                        now,
+                        attributes
+                ),
 
+                new Metric(
+                        "free.memory",
+                        snapshot.getFreeMemory(),
+                        MetricUnit.BYTE,
+                        now,
+                        attributes
+                ),
+
+                new Metric(
+                        "used.memory",
+                        snapshot.getUsedMemory(),
+                        MetricUnit.BYTE,
+                        now,
+                        attributes
+                ),
+
+                new Metric(
+                        "used.memory.percentage",
+                        usedMemoryPercentage,
+                        MetricUnit.PERCENT,
+                        now,
+                        attributes
+                ),
+
+                new Metric(
+                        "total.swap.memory",
+                        snapshot.getTotalSwap(),
+                        MetricUnit.BYTE,
+                        now,
+                        attributes
+                ),
+
+                new Metric(
+                        "free.swap.memory",
+                        snapshot.getFreeSwap(),
+                        MetricUnit.BYTE,
+                        now,
+                        attributes
+                ),
+
+                new Metric(
+                        "used.swap.memory",
+                        snapshot.getUsedSwap(),
+                        MetricUnit.BYTE,
+                        now,
+                        attributes
+                ),
+
+                new Metric(
+                        "used.swap.memory.percentage",
+                        usedSwapMemoryPercentage,
+                        MetricUnit.PERCENT,
+                        now,
+                        attributes
+                )
+        );
     }
 }

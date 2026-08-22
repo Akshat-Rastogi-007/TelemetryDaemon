@@ -4,6 +4,6 @@ import java.util.Collection;
 
 public interface DiskProvider {
 
-    Collection<DiskSnapshot> snapshot();
+    DiskSnapshot snapshot();
 
 }
