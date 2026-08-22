@@ -34,7 +34,6 @@ public class HttpTransport implements TelemetryTransport {
         System.out.println("===== SENDING TELEMETRY =====");
         System.out.println("Destination : " + uri);
         System.out.println("Timestamp   : " + telemetryBatch.getTimestamp());
-        System.out.println("Metrics     : " + telemetryBatch.getMetrics().size());
 
         String serialized = serializer.serialize(telemetryBatch);
 

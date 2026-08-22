@@ -3,6 +3,7 @@
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/CollectorEngine.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/CollectorInitializer.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/CollectorRegister.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/CollectorRegistry.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/cpu/CpuCollector.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/disk/DiskCollector.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/collector/manager/CollectorManager.java
@@ -43,12 +44,17 @@
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/impl/ConsoleReporter.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/impl/FileReporter.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/reporter/impl/HttpReporter.java
-/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/DefaultSchedular.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/BatchCollectorScheduler.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/IndividualCollectorScheduler.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/schedular/Scheduler.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/searialization/JacksonTelemetrySerializer.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/Metric.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/MetricUnit.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/TelemetryBatch.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/aggregator/AggregatorFlusher.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/aggregator/TelemetryAggregator.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/aggregator/TelemetryAggregatorObservable.java
+/home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/aggregator/TelemetryAggregatorObservers.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/buffer/DefaultTransportBuffer.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/buffer/TransportBuffer.java
 /home/Rastogi/Desktop/projects/TelemetryDaemon/TelemetryAgent/src/main/java/agent/telemetry/buffer/TransportBufferObservable.java

@@ -14,7 +14,6 @@ public class CollectorManager {
     }
 
 
-
     public void registerCollector(Collector collector){
 
         String name = collector.getId();
@@ -53,6 +52,24 @@ public class CollectorManager {
                 collectorMap.values()
         );
 
+    }
+
+
+    public Collection<Collector> getActiveCollectors() {
+
+        return collectorMap.values()
+                .stream()
+                .filter(CollectorRegister::isEnable)
+                .map(CollectorRegister::getCollector)
+                .toList();
+    }
+
+    public int getActiveCollectorCount() {
+
+        return (int) collectorMap.values()
+                .stream()
+                .filter(CollectorRegister::isEnable)
+                .count();
     }
 
 }

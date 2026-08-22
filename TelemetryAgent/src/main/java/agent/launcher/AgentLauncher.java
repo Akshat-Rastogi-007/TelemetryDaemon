@@ -10,7 +10,7 @@ import agent.lifecycle.DefaultAgent;
 import agent.reporter.Reporter;
 import agent.reporter.impl.FileReporter;
 import agent.reporter.impl.HttpReporter;
-import agent.schedular.DefaultSchedular;
+import agent.schedular.IndividualCollectorScheduler;
 import agent.schedular.Scheduler;
 import agent.transport.TransportInitializer;
 import agent.telemetry.dispatcher.TelemetryDispatcher;
@@ -23,7 +23,6 @@ public class AgentLauncher {
 
     public Agent launch(AgentConfig config){
 
-        Scheduler scheduler = new DefaultSchedular();
 
         ConnectionStateManager connectionStateManager = new ConnectionStateManager();
 
@@ -38,7 +37,7 @@ public class AgentLauncher {
         );
 
 
-        CollectorEngine collectorEngine = new CollectorInitializer(reporters).initialize(scheduler);
+        CollectorEngine collectorEngine = new CollectorInitializer().initialize(reporters);
 
         Agent agent = new DefaultAgent(config,collectorEngine,heartbeatService);
 

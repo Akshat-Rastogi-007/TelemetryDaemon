@@ -8,20 +8,18 @@ import agent.collector.scheduler.CollectorScheduler;
 import agent.platform.Platform;
 import agent.platform.PlatformFactory;
 import agent.reporter.Reporter;
+import agent.schedular.BatchCollectorScheduler;
 import agent.schedular.Scheduler;
+import agent.telemetry.aggregator.AggregatorFlusher;
+import agent.telemetry.aggregator.TelemetryAggregator;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class CollectorInitializer {
 
-    private final List<Reporter> reporters;
 
-    public CollectorInitializer(List<Reporter> reporters) {
-        this.reporters = reporters;
-    }
-
-    public CollectorEngine initialize(Scheduler scheduler){
+    public CollectorEngine initialize( List<Reporter> reporters){
 
         Platform platform =
                 new PlatformFactory().create();
@@ -42,17 +40,28 @@ public class CollectorInitializer {
 
         manager.registerCollector(collectors);
 
-
-        CollectorScheduler collectorScheduler =
-                new CollectorScheduler(
-                        manager,
-                        scheduler
-                );
-
+        CollectorScheduler collectorScheduler = getScheduler(reporters, manager);
 
         return new CollectorEngine(
-                collectorScheduler,
-                reporters
+                collectorScheduler
+        );
+    }
+
+    private CollectorScheduler getScheduler(List<Reporter> reporters, CollectorManager manager) {
+
+        TelemetryAggregator telemetryAggregator = new TelemetryAggregator(manager.getActiveCollectorCount());
+
+        telemetryAggregator.startCycle();
+
+        BatchCollectorScheduler scheduler = new BatchCollectorScheduler(telemetryAggregator);
+
+        AggregatorFlusher aggregatorFlusher = new AggregatorFlusher(telemetryAggregator, reporters);
+
+        telemetryAggregator.addObserver(aggregatorFlusher);
+
+        return new CollectorScheduler(
+                manager,
+                scheduler
         );
     }
 

@@ -8,14 +8,20 @@ import agent.telemetry.TelemetryBatch;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class DefaultSchedular implements Scheduler {
+public class IndividualCollectorScheduler implements Scheduler {
 
-    public DefaultSchedular() {
+    private final List<Reporter> reporters;
+
+
+    public IndividualCollectorScheduler(List<Reporter> reporters) {
+        this.reporters = reporters;
 
         System.out.println("CREATING SCHEDULAR");
     }
@@ -45,7 +51,7 @@ public class DefaultSchedular implements Scheduler {
     }
 
     @Override
-    public void schedule(Collector collector, List<Reporter> reporters,Duration interval) {
+    public void schedule(Collector collector, Duration interval) {
 
         // task which we need to schedule
 
@@ -59,10 +65,17 @@ public class DefaultSchedular implements Scheduler {
 
                         Collection<Metric> metrics = collector.collect();
 
+                        Map<String, Collection<Metric>> metricMap = new HashMap<>();
+
+
+                        metrics.forEach(metric -> {
+
+                            metricMap.put(collector.getId(),metrics);
+                        });
+
                         TelemetryBatch batch = new TelemetryBatch(
-                                collector.getId(),
                                 Instant.now(),
-                                metrics
+                                metricMap
                         );
 
 
@@ -81,11 +94,9 @@ public class DefaultSchedular implements Scheduler {
 
                     }
 
-                }
-                ,
+                },
                 0,
                 interval.getSeconds(),
                 TimeUnit.SECONDS);
-
     }
 }

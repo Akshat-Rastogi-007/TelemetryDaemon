@@ -13,6 +13,6 @@ public interface Scheduler {
 
     void stop();
 
-    void schedule(Collector collector, List<Reporter> reporters, Duration interval);
+    void schedule(Collector collector, Duration interval);
 
 }

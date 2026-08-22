@@ -27,7 +27,7 @@ public class CollectorScheduler {
     }
 
 
-    public void scheduleCollectors(AgentConfig agentConfig, List<Reporter> reporters){
+    public void scheduleCollectors(AgentConfig agentConfig){
 
         System.out.println("Scheduling Scheduler");
         for (CollectorRegister register : collectorManager.getCollectors()){
@@ -35,7 +35,7 @@ public class CollectorScheduler {
 
             if (register.isEnable()) {
                 System.out.println(register.getCollector().getId());
-                scheduler.schedule(register.getCollector(), reporters, agentConfig.getMetricDuration());
+                scheduler.schedule(register.getCollector(), agentConfig.getMetricDuration());
             }
         }
 

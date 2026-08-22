@@ -2,36 +2,32 @@ package agent.telemetry;
 
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Map;
 
 public class TelemetryBatch {
 
-    private final String collectorId;
     private final Instant timestamp;
-    private final Collection<Metric> metrics;
+    private final Map<String, Collection<Metric>> metricMap;
 
-    public String getCollectorId() {
-        return collectorId;
-    }
 
     public Instant getTimestamp() {
         return timestamp;
     }
 
-    public Collection<Metric> getMetrics() {
-        return metrics;
+    public Map<String, Collection<Metric>> getMetricMap() {
+        return metricMap;
     }
 
-    public TelemetryBatch(String collectorId, Instant timestamp, Collection<Metric> metrics) {
-        this.collectorId = collectorId;
+        public TelemetryBatch( Instant timestamp, Map<String, Collection<Metric>> metricMap) {
         this.timestamp = timestamp;
-        this.metrics = metrics;
+        this.metricMap = metricMap;
     }
 
     @Override
     public String toString() {
         return "TelemetryBatch{" +
-                "timestamp=" + timestamp +
-                ", metrics=" + metrics.size() +
+                ", timestamp=" + timestamp +
+                ", aggregatedMetrics=" + metricMap +
                 '}';
     }
 }

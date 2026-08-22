@@ -12,11 +12,9 @@ public class CollectorEngine {
 
 
     private final CollectorScheduler collectorScheduler;
-    private final List<Reporter> reporters;
 
-    public CollectorEngine(CollectorScheduler collectorScheduler, List<Reporter> reporters) {
+    public CollectorEngine(CollectorScheduler collectorScheduler) {
         this.collectorScheduler = collectorScheduler;
-        this.reporters = reporters;
     }
 
 
@@ -29,7 +27,7 @@ public class CollectorEngine {
 
 
     public void scheduleCollector(AgentConfig config){
-        collectorScheduler.scheduleCollectors(config,reporters);
+        collectorScheduler.scheduleCollectors(config);
     }
 
 

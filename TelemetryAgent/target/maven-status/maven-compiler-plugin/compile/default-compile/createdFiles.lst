@@ -2,6 +2,7 @@ identity/AgentIdentity.class
 identity/service/IdentityService.class
 agent/searialization/JacksonTelemetrySerializer.class
 exceptions/IdentityException.class
+agent/telemetry/aggregator/TelemetryAggregatorObservers.class
 exceptions/RegistrationException.class
 agent/platform/Platform.class
 registration/response/RegistrationResponse.class
@@ -33,7 +34,9 @@ configuration/bootstrap/ConfigurationBootstrap.class
 agent/telemetry/buffer/TransportBuffer.class
 cli/CommandParser.class
 identity/loader/IdentityLoader.class
-agent/schedular/DefaultSchedular.class
+agent/collector/CollectorRegistry.class
+agent/telemetry/aggregator/TelemetryAggregatorObservable.class
+agent/schedular/BatchCollectorScheduler.class
 agent/platform/cpu/CpuProvider.class
 agent/collector/scheduler/CollectorScheduler.class
 cli/command/HelpCommand.class
@@ -42,6 +45,7 @@ agent/telemetry/buffer/DefaultTransportBuffer.class
 exceptions/ResourceNotFoundException.class
 agent/platform/linux/LinuxPlatform.class
 agent/platform/mac/MacPlatform.class
+agent/schedular/IndividualCollectorScheduler.class
 exceptions/AgentNotRegisteredException.class
 agent/platform/memory/MemoryProvider.class
 agent/transport/http/HttpTransport.class
@@ -62,7 +66,9 @@ agent/reporter/impl/HttpReporter.class
 agent/schedular/Scheduler.class
 agent/telemetry/buffer/TransportBufferObserver.class
 agent/lifecycle/DefaultAgent.class
+agent/telemetry/aggregator/TelemetryAggregator.class
 agent/telemetry/buffer/TransportBufferObservable.class
+agent/telemetry/aggregator/AggregatorFlusher.class
 registration/request/HttpRegistrationClient.class
 cli/command/StartCommand.class
 configuration/source/ConfigurationSource.class
