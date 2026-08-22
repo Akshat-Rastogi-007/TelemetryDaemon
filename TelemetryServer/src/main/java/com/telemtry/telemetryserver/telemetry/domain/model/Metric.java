@@ -26,8 +26,6 @@ public class Metric {
 
     private Instant timestamp;
 
-    private String collectorId;
-
     @ElementCollection
     @CollectionTable(
             name = "metric_attributes",
@@ -38,7 +36,7 @@ public class Metric {
     private Map<String, String> attributes = new HashMap<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "telemetry_batch_id")
-    private TelemetryBatch telemetryBatch;
+    @JoinColumn(name = "collector_metrics_id")
+    private CollectorMetrics collectorMetrics;
 }
 

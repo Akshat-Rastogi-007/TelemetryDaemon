@@ -15,7 +15,9 @@ public class TelemetryBatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Instant timestamp;
+
     private Long agentId;
 
     @OneToMany(
@@ -23,7 +25,6 @@ public class TelemetryBatch {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<Metric> metrics = new ArrayList<>();
-
+    private List<CollectorMetrics> collectorMetrics = new ArrayList<>();
 
 }

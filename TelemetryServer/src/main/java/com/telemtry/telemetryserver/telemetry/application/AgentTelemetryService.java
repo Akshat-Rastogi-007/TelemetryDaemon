@@ -2,6 +2,7 @@ package com.telemtry.telemetryserver.telemetry.application;
 
 import com.telemtry.telemetryserver.agent.api.CurrentAgentProvider;
 import com.telemtry.telemetryserver.telemetry.api.request.TelemetryBatchRequest;
+import com.telemtry.telemetryserver.telemetry.domain.model.CollectorMetrics;
 import com.telemtry.telemetryserver.telemetry.domain.model.Metric;
 import com.telemtry.telemetryserver.telemetry.domain.model.TelemetryBatch;
 import com.telemtry.telemetryserver.telemetry.domain.repository.LatestMetricsRepository;
@@ -38,30 +39,57 @@ public class AgentTelemetryService {
         Long agent_id = currentAgentProvider.currentAgent().getId();
         batch.setAgentId(agent_id);
 
-        // hardcoding it
         latestMetricsRepository.save(agent_id,batch);
 
 
     }
 
-    private TelemetryBatch mapToTelemetryBatch(TelemetryBatchRequest batchRequest) {
+    private TelemetryBatch mapToTelemetryBatch(TelemetryBatchRequest batchRequest) { {
 
-        TelemetryBatch batch = new TelemetryBatch();
+            TelemetryBatch batch = new TelemetryBatch();
 
-        batch.setTimestamp(batchRequest.getTimestamp());
+            batch.setTimestamp(batchRequest.getTimestamp());
 
-        List<Metric> metrics = batchRequest.getMetrics()
-                .stream()
-                .map(metricRequest -> {
+            List<CollectorMetrics> collectorMetricsList =
+                    batchRequest.getMetricMap()
+                            .entrySet()
+                            .stream()
+                            .map(entry -> {
 
-                    Metric metric = modelMapper.map(metricRequest, Metric.class);
-                    metric.setTelemetryBatch(batch);
-                    return metric;
-                })
-                .toList();
+                                CollectorMetrics collectorMetrics =
+                                        new CollectorMetrics();
 
-        batch.setMetrics(metrics);
+                                collectorMetrics.setCollectorId(entry.getKey());
+                                collectorMetrics.setTelemetryBatch(batch);
 
-        return batch;
+                                List<Metric> metrics =
+                                        entry.getValue()
+                                                .stream()
+                                                .map(metricRequest -> {
+
+                                                    Metric metric =
+                                                            modelMapper.map(
+                                                                    metricRequest,
+                                                                    Metric.class
+                                                            );
+
+                                                    metric.setCollectorMetrics(
+                                                            collectorMetrics
+                                                    );
+
+                                                    return metric;
+                                                })
+                                                .toList();
+
+                                collectorMetrics.setMetrics(metrics);
+
+                                return collectorMetrics;
+                            })
+                            .toList();
+
+            batch.setCollectorMetrics(collectorMetricsList);
+
+            return batch;
+        }
     }
 }

@@ -3,8 +3,9 @@ package com.telemtry.telemetryserver.telemetry.api.request;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class TelemetryBatchRequest {
@@ -12,14 +13,13 @@ public class TelemetryBatchRequest {
 
     private Instant timestamp;
 
-    private List<MetricRequest> metrics = new ArrayList<>();
-
+    private Map<String, List<MetricRequest>> metricMap = new HashMap<>();
 
     @Override
     public String toString() {
         return "TelemetryBatchRequest{" +
-                ", timestamp=" + timestamp +
-                ", metrics=" + metrics +
+                "timestamp=" + timestamp +
+                ", metrics=" + metricMap +
                 '}';
     }
 }
