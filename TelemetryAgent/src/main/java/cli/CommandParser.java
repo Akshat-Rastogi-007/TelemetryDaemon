@@ -36,7 +36,7 @@ public class CommandParser {
 
         String commandName = args[0].toLowerCase();
 
-        CommandLineFactory factory = commands.get(commandName);
+        CommandLineFactory factory = commands.get(commandNme);
 
         if (factory == null)
             return new HelpCommand();
