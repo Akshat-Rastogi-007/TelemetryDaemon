@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class CommandParser {
 
+    // check
     private final Map<String, CommandLineFactory> commands = new HashMap<>();
 
     public CommandParser() {
