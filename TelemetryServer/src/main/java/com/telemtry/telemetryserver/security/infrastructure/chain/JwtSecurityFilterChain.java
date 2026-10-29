@@ -2,6 +2,7 @@ package com.telemtry.telemetryserver.security.infrastructure.chain;
 
 import com.telemtry.telemetryserver.security.infrastructure.filter.JwtFilter;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class JwtSecurityFilterChain {
@@ -22,11 +24,13 @@ public class JwtSecurityFilterChain {
 
     @Bean
     @Order(4)
-    public SecurityFilterChain jwtSecurityChain(HttpSecurity http)
+    public SecurityFilterChain jwtSecurityChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource)
             throws Exception {
 
         http
-
+                .cors(
+                        cors-> cors.configurationSource(corsConfigurationSource)
+                )
                 .securityMatcher(
                         "/app/user/pat/**",
                         "/app/user/me/",
@@ -35,7 +39,8 @@ public class JwtSecurityFilterChain {
                 )
 
                 .authorizeHttpRequests(auth ->
-                        auth.anyRequest().authenticated()
+                        auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .anyRequest().authenticated()
                 )
 
                 .csrf(AbstractHttpConfigurer::disable)

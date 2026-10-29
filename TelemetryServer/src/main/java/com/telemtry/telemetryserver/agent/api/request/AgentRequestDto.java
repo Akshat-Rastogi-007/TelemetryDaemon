@@ -3,6 +3,8 @@ package com.telemtry.telemetryserver.agent.api.request;
 import com.telemtry.telemetryserver.agent.domain.model.AuthType;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class AgentRequestDto {
 
@@ -17,6 +19,7 @@ public class AgentRequestDto {
     private String javaVersion;
     private String operatingSystem;
     private String architecture;
+    private List<CollectorRequestDto> collectors;
 
 
 }

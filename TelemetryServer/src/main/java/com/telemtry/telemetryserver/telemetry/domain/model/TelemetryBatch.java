@@ -14,7 +14,7 @@ public class TelemetryBatch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     private Instant timestamp;
     private Long agentId;
 

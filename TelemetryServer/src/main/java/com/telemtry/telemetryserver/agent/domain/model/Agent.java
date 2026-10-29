@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -28,6 +30,13 @@ public class Agent {
     private String secureHashToken;
 
     private String installationId;
+
+    @OneToMany(
+            mappedBy = "agent",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Collector> collectors = new ArrayList<>();
 
     @Embedded
     private SystemInfo systemInfo;

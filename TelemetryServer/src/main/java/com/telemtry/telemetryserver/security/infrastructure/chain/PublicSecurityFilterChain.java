@@ -8,15 +8,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class PublicSecurityFilterChain {
 
         @Bean
         @Order(1)
-        public SecurityFilterChain publicSecurityChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain publicSecurityChain(HttpSecurity http, CorsConfigurationSource corsConfigurationSource) throws Exception {
 
             http
+                    .cors(cors -> cors.configurationSource(corsConfigurationSource))
                     .securityMatcher(
                             "/app/auth/**",
                             "/app/user/register-user/**"

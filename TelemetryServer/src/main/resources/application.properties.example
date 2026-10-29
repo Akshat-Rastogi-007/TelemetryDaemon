@@ -1,0 +1,25 @@
+# Copy this file to `application.properties` and fill in real values.
+# application.properties is gitignored on purpose - it holds local secrets
+# (DB credentials, JWT signing key) and must never be committed.
+
+# Application
+spring.application.name=telemetry-server
+server.port=8080
+
+# Database (MySQL/MariaDB). Create the schema first, e.g.:
+#   CREATE DATABASE telemetry_db;
+spring.datasource.url=c:mysql://localhost:3306/telemetry_db
+spring.datasource.username=root
+spring.datasource.password=change-me
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JWT Security - generate your own secret, e.g.: openssl rand -base64 48
+security.jwt.key=replace-with-a-long-random-secret
+security.jwt.expiration=3600000
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.open-in-view=false
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect

@@ -1,9 +1,11 @@
 package com.telemtry.telemetryserver.agent.application;
 
 import com.telemtry.telemetryserver.agent.api.request.AgentRequestDto;
+import com.telemtry.telemetryserver.agent.api.request.CollectorRequestDto;
 import com.telemtry.telemetryserver.agent.api.response.AgentResponseDto;
 import com.telemtry.telemetryserver.agent.domain.model.Agent;
 import com.telemtry.telemetryserver.agent.domain.model.AgentStatus;
+import com.telemtry.telemetryserver.agent.domain.model.Collector;
 import com.telemtry.telemetryserver.agent.domain.model.SystemInfo;
 import com.telemtry.telemetryserver.agent.domain.repository.AgentRepository;
 import com.telemtry.telemetryserver.common.exception.ResourceAlreadyExistsException;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -114,10 +118,27 @@ public class AgentRegistrationService {
         agent.setSystemInfo(systemInfo);
         agent.setInstallationId(dto.getInstallationId());
         agent.setUserId(userId);
+        agent.setCollectors(getCollectors(dto.getCollectors()));
+
 
         return agent;
     }
 
+    private List<Collector> getCollectors(List<CollectorRequestDto> dtoList){
+
+        List<Collector> collectors = new ArrayList<>();
+
+        for ( CollectorRequestDto dto : dtoList){
+
+            Collector collector = new Collector();
+            collector.setCollectorId(dto.getId());
+            collector.setEnabled(dto.isEnabled());
+
+            collectors.add(collector);
+
+        }
+        return collectors;
+    }
 
     @NotNull
     private static AgentResponseDto mapToAgentResponseDto(Agent savedAgent, String secureKey) {
